@@ -1,0 +1,254 @@
+[2026-08-25 20:03:57] WATCHER_START: Started monitoring /Users/pokoman/Downloads/MF/TestFolder
+[2026-08-25 20:06:23] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate.txt'
+[2026-08-25 20:06:23] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/image.webp' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/image.webp'
+[2026-08-25 20:06:23] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/original.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/original.txt'
+[2026-08-25 20:06:23] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/old_data.csv' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/old_data.csv'
+[2026-08-25 20:06:23] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/notes.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/notes.txt'
+[2026-08-25 20:06:23] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/large_image.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/large_image.jpg'
+[2026-08-25 20:06:23] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/report.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/report.docx'
+[2026-08-25 20:06:23] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/video.mp4' -> '/Users/pokoman/Downloads/MF/TestFolder/Videos/video.mp4'
+[2026-08-25 20:06:23] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/photo2.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/photo2.png'
+[2026-08-25 20:06:23] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/photo1.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/photo1.jpg'
+[2026-08-25 20:06:23] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/song.mp3' -> '/Users/pokoman/Downloads/MF/TestFolder/Audio/song.mp3'
+[2026-08-25 20:07:24] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate.txt'
+[2026-08-25 20:07:24] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/image.webp' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/image.webp'
+[2026-08-25 20:07:24] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/original.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/original.txt'
+[2026-08-25 20:07:24] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/old_data.csv' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/old_data.csv'
+[2026-08-25 20:07:24] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/notes.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/notes.txt'
+[2026-08-25 20:07:24] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/large_image.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/large_image.jpg'
+[2026-08-25 20:07:24] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/report.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/report.docx'
+[2026-08-25 20:07:24] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/video.mp4' -> '/Users/pokoman/Downloads/MF/TestFolder/Videos/video.mp4'
+[2026-08-25 20:07:24] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/photo2.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/photo2.png'
+[2026-08-25 20:07:24] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/photo1.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/photo1.jpg'
+[2026-08-25 20:07:24] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/song.mp3' -> '/Users/pokoman/Downloads/MF/TestFolder/Audio/song.mp3'
+[2026-08-25 20:08:07] CONVERT_IMAGE: Converted image.webp to .jpg
+[2026-08-25 20:12:51] WATCHER_START: Started monitoring /Users/pokoman/Downloads/MF/TestFolder
+[2026-08-25 20:15:31] WATCHER_START: Started monitoring /Users/pokoman/Downloads/MF/TestFolder
+[2026-08-25 20:15:33] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/.DS_Store' -> '/Users/pokoman/Downloads/MF/TestFolder/Others/.DS_Store'
+[2026-08-25 20:15:35] WATCHER: Detected new file .DS_Store. Triggering auto-sort.
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/song_rock.mp3' -> '/Users/pokoman/Downloads/MF/TestFolder/Audio/song_rock.mp3'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/report_QQ1.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ1.docx'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/vacation_usa_2024.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_usa_2024.jpg'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_budget_2026.xlsx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_budget_2026.xlsx'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/raw_camera_photo.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/raw_camera_photo.jpg'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/receipt_amazon_mar.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_amazon_mar.png'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/interview_candidate1.mp4' -> '/Users/pokoman/Downloads/MF/TestFolder/Videos/interview_candidate1.mp4'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1019.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1019.pdf'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_mar.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_mar.txt'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/interview_candidate2.mp4' -> '/Users/pokoman/Downloads/MF/TestFolder/Videos/interview_candidate2.mp4'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1008.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1008.pdf'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_feb.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_feb.txt'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/vacation_korea_2024.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_korea_2024.jpg'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/vacation_thai_2025.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_thai_2025.jpg'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/vacation_japan_2024.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_japan_2024.jpg'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_interview_candidate3.mp4' -> '/Users/pokoman/Downloads/MF/TestFolder/Videos/duplicate_of_interview_candidate3.mp4'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_may.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_may.txt'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_IMG_9906.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9906.heic'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/receipt_amazon_jan.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_amazon_jan.png'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/budget_2023.xlsx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2023.xlsx'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/receipt_apple_mar.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_apple_mar.png'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_interview_candidate1.mp4' -> '/Users/pokoman/Downloads/MF/TestFolder/Videos/duplicate_of_interview_candidate1.mp4'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1005.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1005.pdf'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/project_proposal_v2.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_v2.pdf'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_report_QQ4.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_report_QQ4.docx'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/presentation_dev.pptx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_dev.pptx'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/IMG_9916.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9916.heic'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/project_proposal_v1.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_v1.pdf'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/receipt_shopee_feb.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_shopee_feb.png'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1017.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1017.pdf'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_invoice_1017.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_invoice_1017.pdf'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_song_jazz.mp3' -> '/Users/pokoman/Downloads/MF/TestFolder/Audio/duplicate_of_song_jazz.mp3'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_budget_2025.xlsx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_budget_2025.xlsx'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/budget_2025.xlsx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2025.xlsx'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/screenshot_7.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_7.png'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/backup_config.zip' -> '/Users/pokoman/Downloads/MF/TestFolder/Archives/backup_config.zip'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/song_jazz.mp3' -> '/Users/pokoman/Downloads/MF/TestFolder/Audio/song_jazz.mp3'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/receipt_starbucks_jan.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_starbucks_jan.png'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/report_QQ2.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ2.docx'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/IMG_9911.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9911.heic'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/screenshot_4.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_4.png'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/screenshot_1.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_1.png'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/report_QQ3.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ3.docx'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_meeting_notes_may.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_meeting_notes_may.txt'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/song_lofi.mp3' -> '/Users/pokoman/Downloads/MF/TestFolder/Audio/song_lofi.mp3'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_report_QQ2.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_report_QQ2.docx'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/budget_2024.xlsx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2024.xlsx'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/backup_db.zip' -> '/Users/pokoman/Downloads/MF/TestFolder/Archives/backup_db.zip'
+[2026-08-25 20:33:48] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_IMG_9901.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9901.heic'
+[2026-09-07 13:46:36] REMOVE_DUPLICATE: Deleted /Users/pokoman/Downloads/MF/TestFolder/Images/raw_camera_photo.jpg (duplicate of /Users/pokoman/Downloads/MF/TestFolder/raw_camera_photo.jpg)
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_receipt_starbucks_mar.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_receipt_starbucks_mar.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_report_QQ1.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_report_QQ1.docx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_meeting_notes_feb.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_meeting_notes_feb.txt'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/report_QQ1.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ1.docx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/screenshot_9.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_9.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/IMG_9912.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9912.heic'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/IMG_9904.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9904.heic'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_IMG_9903.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9903.heic'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/budget_2026.xlsx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2026.xlsx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_vacation_japan_2023.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_vacation_japan_2023.jpg'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_apr.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_apr.txt'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/vacation_usa_2025.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_usa_2025.jpg'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/raw_camera_photo.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/raw_camera_photo.jpg'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/interview_candidate1.mp4' -> '/Users/pokoman/Downloads/MF/TestFolder/Videos/interview_candidate1.mp4'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/project_proposal_draft.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_draft.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_IMG_9908.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9908.heic'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/presentation_marketing.pptx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_marketing.pptx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_mar.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_mar.txt'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/interview_candidate2.mp4' -> '/Users/pokoman/Downloads/MF/TestFolder/Videos/interview_candidate2.mp4'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/interview_candidate3.mp4' -> '/Users/pokoman/Downloads/MF/TestFolder/Videos/interview_candidate3.mp4'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_receipt_apple_jan.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_receipt_apple_jan.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/backup_files.zip' -> '/Users/pokoman/Downloads/MF/TestFolder/Archives/backup_files.zip'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_feb.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_feb.txt'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_song_rock.mp3' -> '/Users/pokoman/Downloads/MF/TestFolder/Audio/duplicate_of_song_rock.mp3'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1009.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1009.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_IMG_9909.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9909.heic'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/song_pop.mp3' -> '/Users/pokoman/Downloads/MF/TestFolder/Audio/song_pop.mp3'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_vacation_usa_2023.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_vacation_usa_2023.jpg'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1007.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1007.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/report_QQ4.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ4.docx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/vacation_japan_2025.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_japan_2025.jpg'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/receipt_shopee_mar.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_shopee_mar.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/vacation_thai_2024.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_thai_2024.jpg'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_song_lofi.mp3' -> '/Users/pokoman/Downloads/MF/TestFolder/Audio/duplicate_of_song_lofi.mp3'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_may.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_may.txt'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/presentation_sales.pptx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_sales.pptx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1006.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1006.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1012.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1012.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_IMG_9906.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9906.heic'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1010.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1010.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/budget_2023.xlsx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2023.xlsx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/receipt_apple_mar.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_apple_mar.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_receipt_amazon_jan.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_receipt_amazon_jan.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_meeting_notes_jan.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_meeting_notes_jan.txt'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_presentation_marketing.pptx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_presentation_marketing.pptx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1015.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1015.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/project_proposal_v2.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_v2.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/vacation_thai_2023.jpg' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_thai_2023.jpg'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_IMG_9911.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9911.heic'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/presentation_dev.pptx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_dev.pptx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_meeting_notes_jun.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_meeting_notes_jun.txt'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/IMG_9900.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9900.heic'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1016.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1016.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1002.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1002.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/project_proposal_final.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_final.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/project_proposal_v1.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_v1.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/invoice_1017.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1017.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/budget_2025.xlsx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2025.xlsx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/screenshot_6.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_6.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_jun.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_jun.txt'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/screenshot_7.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_7.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_screenshot_7.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_screenshot_7.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/backup_config.zip' -> '/Users/pokoman/Downloads/MF/TestFolder/Archives/backup_config.zip'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/song_jazz.mp3' -> '/Users/pokoman/Downloads/MF/TestFolder/Audio/song_jazz.mp3'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/receipt_starbucks_jan.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_starbucks_jan.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/report_QQ2.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ2.docx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/screenshot_5.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_5.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/IMG_9910.heic' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9910.heic'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_screenshot_1.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_screenshot_1.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/screenshot_1.png' -> '/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_1.png'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/report_QQ3.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ3.docx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_project_proposal_draft.pdf' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_project_proposal_draft.pdf'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/presentation_design.pptx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_design.pptx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/song_lofi.mp3' -> '/Users/pokoman/Downloads/MF/TestFolder/Audio/song_lofi.mp3'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_jan.txt' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_jan.txt'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_report_QQ2.docx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_report_QQ2.docx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/budget_2024.xlsx' -> '/Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2024.xlsx'
+[2026-09-07 13:46:36] MOVE/RENAME: From '/Users/pokoman/Downloads/MF/TestFolder/backup_db.zip' -> '/Users/pokoman/Downloads/MF/TestFolder/Archives/backup_db.zip'
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_receipt_starbucks_mar.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_9.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9912.heic
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9904.heic
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9903.heic
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/vacation_usa_2024.jpg
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_vacation_japan_2023.jpg
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/vacation_usa_2025.jpg
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/receipt_amazon_mar.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_receipt_apple_jan.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/vacation_korea_2024.jpg
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9909.heic
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_vacation_usa_2023.jpg
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/vacation_japan_2025.jpg
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/receipt_shopee_mar.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/vacation_thai_2024.jpg
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/vacation_thai_2025.jpg
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/vacation_japan_2024.jpg
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9906.heic
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/receipt_amazon_jan.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/receipt_apple_mar.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_receipt_amazon_jan.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/vacation_thai_2023.jpg
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9911.heic
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9900.heic
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9916.heic
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/receipt_shopee_feb.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_6.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_7.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_screenshot_7.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/receipt_starbucks_jan.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_5.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9911.heic
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_4.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9910.heic
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_screenshot_1.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_1.png
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9901.heic
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Archives/backup_files.zip
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Archives/backup_config.zip
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Archives/backup_db.zip
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Videos/interview_candidate1.mp4
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Videos/interview_candidate2.mp4
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Videos/interview_candidate3.mp4
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Videos/duplicate_of_interview_candidate3.mp4
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Videos/duplicate_of_interview_candidate1.mp4
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Audio/song_rock.mp3
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Audio/duplicate_of_song_rock.mp3
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Audio/song_pop.mp3
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Audio/duplicate_of_song_lofi.mp3
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Audio/duplicate_of_song_jazz.mp3
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Audio/song_jazz.mp3
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Audio/song_lofi.mp3
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_report_QQ1.docx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ1.docx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2026.xlsx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_budget_2026.xlsx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_apr.txt
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_draft.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_marketing.pptx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1019.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_mar.txt
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1008.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_feb.txt
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1009.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1007.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ4.docx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_may.txt
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_sales.pptx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1006.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1012.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1010.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2023.xlsx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_meeting_notes_jan.txt
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1005.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_presentation_marketing.pptx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1015.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_v2.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_report_QQ4.docx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_dev.pptx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_meeting_notes_jun.txt
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1016.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1002.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_final.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_v1.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1017.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_invoice_1017.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_budget_2025.xlsx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2025.xlsx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_jun.txt
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ2.docx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ3.docx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_meeting_notes_may.txt
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_project_proposal_draft.pdf
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_design.pptx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_jan.txt
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_report_QQ2.docx
+[2026-09-07 14:10:44] EMPTY_JUNK: Deleted old junk file /Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2024.xlsx
