@@ -4,9 +4,9 @@ import customtkinter as ctk
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import threading
-import re
-import subprocess
+import math
 import uuid
+from datetime import datetime
 
 # Import Core Modules (OOP)
 from core.logger import ActionLogger
@@ -16,18 +16,19 @@ from core.cleaner import StorageCleaner
 from core.watcher import WatcherManager
 from core.ai_assistant import AIAssistant
 
-# Theme Colors (Minimalist Grayscale)
-BG_MAIN = "#FAFAFA"
+# Theme Colors (Modern Light/Purple)
+BG_MAIN = "#F3F5F9"
 BG_CARD = "#FFFFFF"
-TEXT_MAIN = "#111827"
-ACCENT_ORANGE = "#374151" # Reusing variable name to avoid global rename
-ACCENT_HOVER = "#1F2937"
-ACCENT_RED = "#E53E3E"
-ACCENT_RED_HOVER = "#C53030"
+TEXT_MAIN = "#1F2937"
+TEXT_MUTED = "#6B7280"
+ACCENT_PRIMARY = "#7C3AED" # Purple
+ACCENT_HOVER = "#6D28D9"
+ACCENT_SUCCESS = "#10B981"
+ACCENT_WARNING = "#F59E0B"
+ACCENT_DANGER = "#EF4444"
+SIDEBAR_BG = "#FFFFFF"
 
 ctk.set_appearance_mode("Light")
-
-
 
 class SmartFileManagerApp(ctk.CTk):
     def get_embedded_api_key(self):
@@ -45,9 +46,9 @@ class SmartFileManagerApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("ZipZap - ระบบจัดการไฟล์อัจฉริยะ")
-        self.geometry("1000x700")
-        self.minsize(900, 650)
+        self.title("ZipZap - Smart File Manager")
+        self.geometry("1200x800")
+        self.minsize(1000, 700)
         self.configure(fg_color=BG_MAIN)
         
         self.config_file = "config.json"
@@ -92,417 +93,413 @@ class SmartFileManagerApp(ctk.CTk):
                 with open(self.config_file, "r") as f:
                     return json.load(f)
             except: pass
-        return {"watch_folder": "", "gemini_api_key": ""}
+        return {"watch_folder": "", "gemini_api_key": "", "theme": "Light"}
 
     def save_config(self, key, value):
         self.config_data[key] = value
         with open(self.config_file, "w") as f:
             json.dump(self.config_data, f, indent=4)
         
-        # Update API Keys
-        if key == "gemini_api_key":
-            self.organizer.api_key = value
-            self.ai_assistant.api_key = value
+        if key == "theme":
+            ctk.set_appearance_mode(value)
 
     def setup_ui(self):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
-        # Sidebar
-        self.sidebar_frame = ctk.CTkFrame(self, width=220, corner_radius=0, fg_color=BG_CARD)
+        # --- Sidebar ---
+        self.sidebar_frame = ctk.CTkFrame(self, width=240, corner_radius=0, fg_color=SIDEBAR_BG)
         self.sidebar_frame.grid(row=0, column=0, sticky="nsew")
-        self.sidebar_frame.grid_rowconfigure(5, weight=1)
+        self.sidebar_frame.grid_rowconfigure(7, weight=1)
 
-        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="✦ ZipZap", font=ctk.CTkFont(family="Helvetica", size=24, weight="bold"), text_color=ACCENT_ORANGE)
-        self.logo_label.grid(row=0, column=0, padx=20, pady=(30, 20))
+        # Logo
+        logo_frame = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
+        logo_frame.grid(row=0, column=0, padx=20, pady=(30, 30), sticky="w")
+        ctk.CTkLabel(logo_frame, text="⚡", font=ctk.CTkFont(size=28), text_color=ACCENT_PRIMARY).pack(side="left")
+        ctk.CTkLabel(logo_frame, text=" ZipZap", font=ctk.CTkFont(family="Helvetica", size=22, weight="bold"), text_color=ACCENT_PRIMARY).pack(side="left", padx=(5,0))
 
+        # Nav Buttons
+        self.nav_btns = []
         def create_nav_btn(text, row, command):
-            btn = ctk.CTkButton(self.sidebar_frame, text=text, command=command, fg_color="transparent", text_color=TEXT_MAIN, hover_color=BG_MAIN, font=ctk.CTkFont(family="Helvetica", size=16, weight="bold"), anchor="w", height=40)
-            btn.grid(row=row, column=0, padx=20, pady=5, sticky="ew")
+            btn = ctk.CTkButton(self.sidebar_frame, text=text, command=lambda c=command, r=row: self.handle_nav(c, r), 
+                                fg_color="transparent", text_color=TEXT_MUTED, hover_color=BG_MAIN, 
+                                font=ctk.CTkFont(family="Helvetica", size=15, weight="bold"), anchor="w", height=45)
+            btn.grid(row=row, column=0, padx=15, pady=5, sticky="ew")
+            self.nav_btns.append(btn)
             return btn
 
-        self.btn_dashboard = create_nav_btn("⌨  แผงควบคุมหลัก", 1, self.show_dashboard)
-        self.btn_ai = create_nav_btn("✧  ผู้ช่วย AI", 2, self.show_ai_chat)
-        self.btn_logs = create_nav_btn("📄  ประวัติการใช้งาน", 3, self.show_logs)
-        self.btn_settings = create_nav_btn("⚙  ตั้งค่าระบบ", 4, self.show_settings)
+        self.btn_dashboard = create_nav_btn("  Dashboard", 1, self.show_dashboard)
+        self.btn_cleaner = create_nav_btn("  Smart Cleaner", 2, self.show_cleaner)
+        self.btn_converter = create_nav_btn("  Converter", 3, self.show_converter)
+        self.btn_ai = create_nav_btn("  AI Help Chat", 4, self.show_ai_chat)
+        self.btn_monitor = create_nav_btn("  Auto Monitor", 5, self.show_monitor)
+        self.btn_settings = create_nav_btn("  Settings", 6, self.show_settings)
 
-        self.btn_dashboard.configure(fg_color=BG_MAIN, text_color=ACCENT_ORANGE)
+        # Theme Toggle
+        theme_frame = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
+        theme_frame.grid(row=8, column=0, padx=20, pady=20, sticky="w")
+        self.switch_theme = ctk.CTkSwitch(theme_frame, text="Dark Mode", command=self.toggle_theme, progress_color=ACCENT_PRIMARY)
+        self.switch_theme.pack()
+        if self.config_data.get("theme") == "Dark":
+            self.switch_theme.select()
 
-        # Main View Frame
+        # --- Main Content Area ---
         self.main_frame = ctk.CTkFrame(self, fg_color=BG_MAIN, corner_radius=0)
         self.main_frame.grid(row=0, column=1, padx=0, pady=0, sticky="nsew")
 
+        # Top Bar (Header)
+        self.topbar = ctk.CTkFrame(self.main_frame, height=60, fg_color=BG_CARD, corner_radius=0)
+        self.topbar.pack(fill="x")
+        self.lbl_page_title = ctk.CTkLabel(self.topbar, text="Dashboard", font=ctk.CTkFont(family="Helvetica", size=20, weight="bold"), text_color=TEXT_MAIN)
+        self.lbl_page_title.pack(side="left", padx=30, pady=15)
+
+        # Container for pages
+        self.content_container = ctk.CTkFrame(self.main_frame, fg_color="transparent")
+        self.content_container.pack(fill="both", expand=True)
+
+        self.frames = {}
         self.create_dashboard()
+        self.create_cleaner()
+        self.create_converter()
         self.create_ai_chat()
-        self.create_logs()
+        self.create_monitor()
         self.create_settings()
         
-        self.show_dashboard()
+        # Select first nav
+        self.handle_nav(self.show_dashboard, 1)
+
+    def handle_nav(self, command, row):
+        for idx, btn in enumerate(self.nav_btns):
+            if idx + 1 == row:
+                btn.configure(fg_color=f"{ACCENT_PRIMARY}1A", text_color=ACCENT_PRIMARY) # 1A is ~10% opacity in hex, but CTK uses fg_color
+                # Workaround for tint: just use a light purple or solid
+                btn.configure(fg_color="#EDE9FE", text_color=ACCENT_PRIMARY)
+            else:
+                btn.configure(fg_color="transparent", text_color=TEXT_MUTED)
+        command()
 
     def hide_all_frames(self):
-        self.frame_dashboard.pack_forget()
-        self.frame_ai.pack_forget()
-        self.frame_logs.pack_forget()
-        self.frame_settings.pack_forget()
-        for btn in [self.btn_dashboard, self.btn_ai, self.btn_logs, self.btn_settings]:
-            btn.configure(fg_color="transparent", text_color=TEXT_MAIN)
+        for frame in self.frames.values():
+            frame.pack_forget()
 
     def show_dashboard(self):
         self.hide_all_frames()
-        self.btn_dashboard.configure(fg_color=BG_MAIN, text_color=ACCENT_ORANGE)
-        self.frame_dashboard.pack(fill="both", expand=True, padx=30, pady=30)
+        self.lbl_page_title.configure(text="Dashboard")
+        self.frames["dashboard"].pack(fill="both", expand=True, padx=30, pady=20)
+        self.update_dashboard_stats()
+
+    def show_cleaner(self):
+        self.hide_all_frames()
+        self.lbl_page_title.configure(text="Smart Cleaner")
+        self.frames["cleaner"].pack(fill="both", expand=True, padx=30, pady=20)
+
+    def show_converter(self):
+        self.hide_all_frames()
+        self.lbl_page_title.configure(text="Universal Converter")
+        self.frames["converter"].pack(fill="both", expand=True, padx=30, pady=20)
 
     def show_ai_chat(self):
         self.hide_all_frames()
-        self.btn_ai.configure(fg_color=BG_MAIN, text_color=ACCENT_ORANGE)
-        self.frame_ai.pack(fill="both", expand=True, padx=30, pady=30)
+        self.lbl_page_title.configure(text="AI Help Chat")
+        self.frames["ai"].pack(fill="both", expand=True, padx=30, pady=20)
 
-    def show_logs(self):
+    def show_monitor(self):
         self.hide_all_frames()
-        self.btn_logs.configure(fg_color=BG_MAIN, text_color=ACCENT_ORANGE)
-        self.frame_logs.pack(fill="both", expand=True, padx=30, pady=30)
-        self.refresh_logs()
+        self.lbl_page_title.configure(text="Auto Monitor")
+        self.frames["monitor"].pack(fill="both", expand=True, padx=30, pady=20)
 
     def show_settings(self):
         self.hide_all_frames()
-        self.btn_settings.configure(fg_color=BG_MAIN, text_color=ACCENT_ORANGE)
-        self.frame_settings.pack(fill="both", expand=True, padx=30, pady=30)
+        self.lbl_page_title.configure(text="Settings")
+        self.frames["settings"].pack(fill="both", expand=True, padx=30, pady=20)
 
+    def toggle_theme(self):
+        theme = "Dark" if self.switch_theme.get() == 1 else "Light"
+        self.save_config("theme", theme)
+
+    # ================= UI CREATION METHODS =================
+    
     def create_dashboard(self):
-        self.frame_dashboard = ctk.CTkFrame(self.main_frame, fg_color="transparent")
+        frame = ctk.CTkFrame(self.content_container, fg_color="transparent")
+        self.frames["dashboard"] = frame
         
-        # Header (Target Folder & Watcher)
-        header = ctk.CTkFrame(self.frame_dashboard, fg_color=BG_CARD, corner_radius=15)
-        header.pack(fill="x", pady=(0, 20), ipady=10)
+        # Top Row
+        top_row = ctk.CTkFrame(frame, fg_color="transparent")
+        top_row.pack(fill="x", pady=(0, 20))
         
-        folder_disp = self.current_folder if self.current_folder else "ยังไม่ได้เลือก"
-        self.lbl_folder = ctk.CTkLabel(header, text=f"📂 โฟลเดอร์ปัจจุบัน: {folder_disp}", font=ctk.CTkFont(family="Helvetica", size=14, weight="bold"), text_color=TEXT_MAIN)
-        self.lbl_folder.pack(side="left", padx=20, pady=10)
-        self.lbl_stats = ctk.CTkLabel(header, text="", font=ctk.CTkFont(family="Helvetica", size=13), text_color="#6B7280")
-        self.lbl_stats.pack(side="left", padx=10, pady=10)
+        # Storage Overview Card
+        storage_card = ctk.CTkFrame(top_row, fg_color=BG_CARD, corner_radius=15)
+        storage_card.pack(side="left", fill="both", expand=True, padx=(0, 10))
+        ctk.CTkLabel(storage_card, text="Storage Overview", font=ctk.CTkFont(weight="bold", size=16), text_color=TEXT_MAIN).pack(anchor="w", padx=20, pady=(15, 0))
         
-        btn_select_folder = ctk.CTkButton(header, text="เลือกโฟลเดอร์...", width=100, fg_color=ACCENT_ORANGE, hover_color=ACCENT_HOVER, font=ctk.CTkFont(family="Helvetica", size=14, weight="bold"), command=self.select_folder)
-        btn_select_folder.pack(side="left", padx=10, pady=10)
+        self.canvas = tk.Canvas(storage_card, width=150, height=150, bg=BG_CARD, highlightthickness=0)
+        self.canvas.pack(side="left", padx=20, pady=15)
         
-        self.switch_watch = ctk.CTkSwitch(header, text="เปิดระบบอัตโนมัติ (Auto Monitor)", progress_color=ACCENT_ORANGE, text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=14, weight="bold"), command=self.toggle_watch)
-        self.switch_watch.pack(side="right", padx=20, pady=10)
-
-        # TabView for Tools
-        self.tabview = ctk.CTkTabview(self.frame_dashboard, 
-                                      fg_color="transparent",
-                                      segmented_button_fg_color="#E5E7EB",
-                                      segmented_button_selected_color="#FFFFFF",
-                                      segmented_button_unselected_color="#E5E7EB",
-                                      segmented_button_unselected_hover_color="#D1D5DB",
-                                      text_color="#111827")
-        self.tabview.pack(fill="both", expand=True)
+        stats_frame = ctk.CTkFrame(storage_card, fg_color="transparent")
+        stats_frame.pack(side="left", padx=20, pady=20, fill="y")
+        self.lbl_total_files = ctk.CTkLabel(stats_frame, text="● Total Files: 0", text_color=TEXT_MUTED)
+        self.lbl_total_files.pack(anchor="w", pady=5)
+        self.lbl_folder_size = ctk.CTkLabel(stats_frame, text="● Total Size: 0 MB", text_color=TEXT_MUTED)
+        self.lbl_folder_size.pack(anchor="w", pady=5)
         
-        tab_conv = self.tabview.add("🔄 แปลงไฟล์")
-        tab_org = self.tabview.add("🗂 จัดระเบียบ")
-        tab_clean = self.tabview.add("🧹 ทำความสะอาด")
-
-        def create_tool_btn(parent, text, tooltip_text, command, is_danger=False, require_folder=False, options=None, default_opt=None):
-            frame = ctk.CTkFrame(parent, fg_color="transparent")
-            frame.pack(pady=10, padx=20, fill="x")
+        # Target Folder Selection Card
+        folder_card = ctk.CTkFrame(top_row, fg_color=BG_CARD, corner_radius=15)
+        folder_card.pack(side="right", fill="both", expand=True, padx=(10, 0))
+        ctk.CTkLabel(folder_card, text="Target Folder", font=ctk.CTkFont(weight="bold", size=16), text_color=TEXT_MAIN).pack(anchor="w", padx=20, pady=(15, 10))
+        self.lbl_dash_folder = ctk.CTkLabel(folder_card, text="No folder selected", text_color=TEXT_MUTED, wraplength=300)
+        self.lbl_dash_folder.pack(anchor="w", padx=20, pady=5)
+        btn_sel = ctk.CTkButton(folder_card, text="Select Folder", command=self.select_folder, fg_color=ACCENT_PRIMARY, hover_color=ACCENT_HOVER)
+        btn_sel.pack(anchor="w", padx=20, pady=15)
+        
+        # Middle Row (Quick Actions)
+        mid_row = ctk.CTkFrame(frame, fg_color="transparent")
+        mid_row.pack(fill="x", pady=20)
+        ctk.CTkLabel(mid_row, text="Quick Actions", font=ctk.CTkFont(weight="bold", size=16), text_color=TEXT_MAIN).pack(anchor="w", pady=(0, 10))
+        
+        qa_container = ctk.CTkFrame(mid_row, fg_color="transparent")
+        qa_container.pack(fill="x")
+        
+        def qa_btn(parent, text, command):
+            b = ctk.CTkButton(parent, text=text, command=command, fg_color=BG_CARD, text_color=TEXT_MAIN, hover_color="#F9FAFB", height=80, corner_radius=15, font=ctk.CTkFont(size=14, weight="bold"))
+            b.pack(side="left", fill="x", expand=True, padx=5)
+            return b
             
-            color = ACCENT_RED if is_danger else BG_CARD
-            hover = ACCENT_RED_HOVER if is_danger else "#E5E7EB"
-            txt_color = "#FFF" if is_danger else TEXT_MAIN
+        qa_btn(qa_container, "🧹 Smart Clean", lambda: self.handle_nav(self.show_cleaner, 2))
+        qa_btn(qa_container, "🔄 Convert File", lambda: self.handle_nav(self.show_converter, 3))
+        qa_btn(qa_container, "✨ AI Rename", lambda: self.handle_nav(self.show_converter, 3))
+        qa_btn(qa_container, "👁️ Watchdog", lambda: self.handle_nav(self.show_monitor, 5))
+
+        # Bottom Row (Recent Activities)
+        bot_row = ctk.CTkFrame(frame, fg_color=BG_CARD, corner_radius=15)
+        bot_row.pack(fill="both", expand=True, pady=10)
+        ctk.CTkLabel(bot_row, text="Recent Activities", font=ctk.CTkFont(weight="bold", size=16), text_color=TEXT_MAIN).pack(anchor="w", padx=20, pady=(15, 10))
+        self.dash_log = ctk.CTkTextbox(bot_row, fg_color="transparent", text_color=TEXT_MUTED)
+        self.dash_log.pack(fill="both", expand=True, padx=20, pady=(0,20))
+
+    def create_cleaner(self):
+        frame = ctk.CTkFrame(self.content_container, fg_color="transparent")
+        self.frames["cleaner"] = frame
+        
+        card = ctk.CTkFrame(frame, fg_color=BG_CARD, corner_radius=15)
+        card.pack(fill="both", expand=True, pady=10)
+        
+        ctk.CTkLabel(card, text="Smart Cleaner", font=ctk.CTkFont(size=20, weight="bold"), text_color=TEXT_MAIN).pack(pady=30)
+        ctk.CTkLabel(card, text="Free up space by finding and deleting junk files, duplicates, and large items.", text_color=TEXT_MUTED).pack()
+        
+        self.btn_run_clean = ctk.CTkButton(card, text="Scan Target Folder", height=45, fg_color=ACCENT_PRIMARY, hover_color=ACCENT_HOVER, command=self.run_cleaner_scan)
+        self.btn_run_clean.pack(pady=30)
+        self.folder_btns.append({"btn": self.btn_run_clean, "color": ACCENT_PRIMARY, "txt_color": "#FFF"})
+        self.btn_run_clean.configure(state="disabled")
+
+    def create_converter(self):
+        frame = ctk.CTkFrame(self.content_container, fg_color="transparent")
+        self.frames["converter"] = frame
+        
+        card = ctk.CTkFrame(frame, fg_color=BG_CARD, corner_radius=15)
+        card.pack(fill="both", expand=True, pady=10)
+        
+        tabview = ctk.CTkTabview(card, fg_color="transparent", text_color=TEXT_MAIN, segmented_button_selected_color=ACCENT_PRIMARY, segmented_button_selected_hover_color=ACCENT_HOVER)
+        tabview.pack(fill="both", expand=True, padx=20, pady=10)
+        
+        tab_doc = tabview.add("📄 Document")
+        tab_img = tabview.add("🖼 Image")
+        tab_media = tabview.add("🎬 Media")
+        tab_org = tabview.add("🗂 Organize")
+        
+        def add_tool(parent, title, desc, command, requires_folder=False, is_danger=False):
+            f = ctk.CTkFrame(parent, fg_color="#F9FAFB", corner_radius=10)
+            f.pack(fill="x", pady=10, padx=20)
+            ctk.CTkLabel(f, text=title, font=ctk.CTkFont(weight="bold"), text_color=TEXT_MAIN).pack(anchor="w", padx=15, pady=(15, 0))
+            ctk.CTkLabel(f, text=desc, text_color=TEXT_MUTED).pack(anchor="w", padx=15, pady=(0, 15))
+            b = ctk.CTkButton(f, text="Start", command=command, fg_color=ACCENT_PRIMARY if not is_danger else ACCENT_DANGER, hover_color=ACCENT_HOVER)
+            b.pack(side="right", padx=15, pady=15)
             
-            if options:
-                opt_var = ctk.StringVar(value=default_opt[0] if default_opt else options[0][0])
-                opt_menu = ctk.CTkOptionMenu(frame, values=[o[0] for o in options], variable=opt_var, width=130, height=45, fg_color=BG_MAIN, text_color=TEXT_MAIN, button_color=ACCENT_ORANGE, button_hover_color=ACCENT_HOVER, font=ctk.CTkFont(family="Helvetica", size=13))
-                opt_menu.pack(side="right", padx=(10, 0))
-                
-                val_map = {o[0]: o[1] for o in options}
-                btn = ctk.CTkButton(frame, text=text, command=None,
-                                    fg_color=color, text_color=txt_color, hover_color=hover,
-                                    font=ctk.CTkFont(family="Helvetica", size=15), height=45, anchor="w" if not is_danger else "center")
-                btn.configure(command=lambda b=btn, ov=opt_var, vm=val_map: command(b, vm[ov.get()]))
-                btn.pack(side="left", fill="x", expand=True)
-            else:
-                btn = ctk.CTkButton(frame, text=text, command=None,
-                                    fg_color=color, text_color=txt_color, hover_color=hover,
-                                    font=ctk.CTkFont(family="Helvetica", size=15), height=45, anchor="w" if not is_danger else "center")
-                # Handle old command signature
-                if command.__code__.co_argcount > 1:
-                    btn.configure(command=lambda b=btn: command(b))
-                else:
-                    btn.configure(command=command)
-                btn.pack(side="left", fill="x", expand=True)
-                
-            if require_folder:
-                btn.configure(state="disabled", fg_color="#374151", text_color="#9CA3AF")
-                self.folder_btns.append({"btn": btn, "color": color, "txt_color": txt_color})
-            return btn
+            # Reposition button to top right instead of packing at bottom
+            b.place(relx=1.0, rely=0.5, anchor="e", x=-15)
+            
+            if requires_folder:
+                self.folder_btns.append({"btn": b, "color": ACCENT_PRIMARY, "txt_color": "#FFF"})
+                b.configure(state="disabled")
 
-        # 1. Conversion Tab
-        create_tool_btn(tab_conv, "🖼  แปลงรูปภาพให้เป็น JPG", "แปลงไฟล์รูปภาพนามสกุลแปลกๆ ให้เป็น .jpg เพื่อให้เอาไปใช้ต่อได้ง่าย", self.run_convert_image)
-        create_tool_btn(tab_conv, "📄  แปลงไฟล์ Word เป็น PDF", "คลิกเพื่อเลือกไฟล์ .docx และโปรแกรมจะเซฟเป็น .pdf ให้อัตโนมัติ", self.run_convert_pdf)
-        create_tool_btn(tab_conv, "🎵  ดึงเสียงออกจากวิดีโอ (บันทึกเป็น MP3)", "สกัดเอาแต่เสียงพูดจากวิดีโอ และเซฟเป็นไฟล์ .mp3", self.run_extract_audio)
-        create_tool_btn(tab_conv, "🗜  บีบอัดขนาดรูปภาพ", "ลดขนาดภาพที่ใหญ่เกิน 5MB ให้เล็กลง เพื่อประหยัดพื้นที่เก็บข้อมูล", self.run_compress_image, options=[("ถ้าเกิน 1MB", 1), ("ถ้าเกิน 5MB", 5), ("ถ้าเกิน 10MB", 10)], default_opt=("ถ้าเกิน 5MB", 5))
-
-        # 2. Organizer Tab
-        create_tool_btn(tab_org, "📋  จัดกลุ่มไฟล์ตามประเภท (รูป, วิดีโอ, เอกสาร)", "ระบบจะย้ายไฟล์ในโฟลเดอร์เป้าหมายไปจัดกลุ่มให้เป็นหมวดหมู่ (เช่นโฟลเดอร์ Images, Videos)", self.run_sort_extension, require_folder=True)
-        create_tool_btn(tab_org, "📅  จัดกลุ่มไฟล์ตามเดือนและปีที่สร้าง", "ย้ายไฟล์ทั้งหมดเข้าโฟลเดอร์ที่แบ่งตาม ปีและเดือนที่สร้างไฟล์ เหมาะสำหรับรูปถ่าย", self.run_sort_date, require_folder=True)
-        frame_smart = ctk.CTkFrame(tab_org, fg_color="transparent")
-        frame_smart.pack(pady=10, padx=20, fill="x")
-        btn_smart = ctk.CTkButton(frame_smart, text="✧  ให้ AI ช่วยตั้งชื่อไฟล์ให้ใหม่ (Smart Rename)", command=None,
-                                  fg_color=ACCENT_ORANGE, text_color="#FFF", hover_color=ACCENT_HOVER,
-                                  font=ctk.CTkFont(family="Helvetica", size=15, weight="bold"), height=45, anchor="w")
-        btn_smart.configure(command=lambda b=btn_smart: self.run_smart_rename(b))
-        btn_smart.pack(side="left", fill="x", expand=True)
-
-        # 3. Cleanup Tab
-        create_tool_btn(tab_clean, "📑  ค้นหาและลบไฟล์ที่ซ้ำกัน", "สแกนหาไฟล์ที่มีเนื้อหาเหมือนกันเป๊ะในโฟลเดอร์เป้าหมาย และลบทิ้งให้เหลือแค่อันเดียว", self.run_remove_duplicates, require_folder=True)
-        create_tool_btn(tab_clean, "📦  บีบอัดไฟล์ที่ไม่ได้ใช้งานเป็น .ZIP", "ตรวจสอบว่าไฟล์ไหนไม่ค่อยถูกเปิดนานเกิน 6 เดือน จะจับมัดรวมเป็น ZIP ให้ประหยัดที่", self.run_auto_zip, require_folder=True, options=[("เกิน 3 เดือน", 3), ("เกิน 6 เดือน", 6), ("เกิน 12 เดือน", 12)], default_opt=("เกิน 6 เดือน", 6))
-        create_tool_btn(tab_clean, "🗑  ลบไฟล์ขยะที่ไม่ได้ใช้งาน", "ลบไฟล์ทั้งหมดในโฟลเดอร์เป้าหมายที่อายุเก่าเกิน 7 วัน (โปรดระวังการลบข้อมูลสำคัญ)", self.run_empty_junk, is_danger=True, require_folder=True, options=[("เกิน 3 วัน", 3), ("เกิน 7 วัน", 7), ("เกิน 14 วัน", 14), ("เกิน 30 วัน", 30)], default_opt=("เกิน 7 วัน", 7))
+        add_tool(tab_doc, "Word to PDF", "Convert .docx files to PDF formats quickly.", self.run_convert_pdf)
+        add_tool(tab_img, "Convert to JPG", "Convert HEIC, WEBP, PNG to standard JPG.", self.run_convert_image)
+        add_tool(tab_img, "Compress Image", "Reduce image size (files > 5MB).", lambda: self.run_async(None, self.converter.compress_image, filedialog.askopenfilename(), 5))
+        add_tool(tab_media, "Extract Audio (MP3)", "Extract audio from MP4, MOV, MKV files.", self.run_extract_audio)
+        add_tool(tab_org, "Smart Rename (AI)", "Let Gemini AI rename files based on image/PDF content.", self.run_smart_rename)
+        add_tool(tab_org, "Sort by Extension", "Group files into folders by their type.", self.run_sort_extension, requires_folder=True)
+        add_tool(tab_org, "Sort by Date", "Group files into Year/Month folders.", self.run_sort_date, requires_folder=True)
 
     def create_ai_chat(self):
-        self.frame_ai = ctk.CTkFrame(self.main_frame, fg_color="transparent")
+        frame = ctk.CTkFrame(self.content_container, fg_color="transparent")
+        self.frames["ai"] = frame
         
-        header = ctk.CTkFrame(self.frame_ai, fg_color="transparent")
-        header.pack(fill="x", pady=(0, 10))
-        ctk.CTkLabel(header, text="ผู้ช่วยค้นหาไฟล์ AI (AI Assistant)", font=ctk.CTkFont(family="Helvetica", size=24, weight="bold"), text_color=TEXT_MAIN).pack(side="left")
-        btn_clear_chat = ctk.CTkButton(header, text="🧹 ล้างแชท", width=80, fg_color="#E5E7EB", hover_color="#D1D5DB", text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=14, weight="bold"), command=self.clear_chat)
-        btn_clear_chat.pack(side="right")
+        card = ctk.CTkFrame(frame, fg_color=BG_CARD, corner_radius=15)
+        card.pack(fill="both", expand=True, pady=10)
         
-        self.chat_history = ctk.CTkTextbox(self.frame_ai, wrap="word", fg_color=BG_CARD, text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=14), corner_radius=15)
-        self.chat_history.pack(fill="both", expand=True, pady=10)
-        self.chat_history.insert("end", "✧ AI: สวัสดีครับ! ผมคือผู้ช่วยค้นหาไฟล์ คุณสามารถพิมพ์ถามผมได้เลย เช่น 'มีไฟล์รูปภาพเก่าๆ ของปีที่แล้วไหม?' หรือ 'ในเครื่องมีไฟล์ PDF กี่ไฟล์?'\n\n")
-        self.chat_history.configure(state="disabled")
+        ctk.CTkLabel(card, text="AI Help Chat", font=ctk.CTkFont(size=18, weight="bold"), text_color=TEXT_MAIN).pack(anchor="w", padx=20, pady=(20,10))
         
-        input_frame = ctk.CTkFrame(self.frame_ai, fg_color="transparent")
-        input_frame.pack(fill="x", pady=5)
+        self.chat_history = ctk.CTkTextbox(card, fg_color="#F9FAFB", text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=14))
+        self.chat_history.pack(fill="both", expand=True, padx=20, pady=10)
         
-        self.entry_chat = ctk.CTkEntry(input_frame, placeholder_text="พิมพ์ข้อความที่นี่...", fg_color=BG_CARD, border_color="#D1D5DB", text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=14))
-        self.entry_chat.pack(side="left", fill="x", expand=True, padx=(0, 10), ipady=8)
-        self.entry_chat.bind("<Return>", lambda event: self.send_ai_message())
+        bottom_frame = ctk.CTkFrame(card, fg_color="transparent")
+        bottom_frame.pack(fill="x", padx=20, pady=20)
         
-        # Add Right-Click Paste Menu and Mac Command-V support
-        def paste_text(event=None):
-            try:
-                text = self.clipboard_get()
-                if self.entry_chat.select_present():
-                    self.entry_chat.delete(tk.SEL_FIRST, tk.SEL_LAST)
-                self.entry_chat.insert("insert", text)
-            except Exception:
-                pass
-            return "break"
-            
-        self.entry_chat.bind("<Command-v>", paste_text)
+        self.chat_input = ctk.CTkEntry(bottom_frame, placeholder_text="Ask AI to find files, summarize docs, etc...", fg_color="#F9FAFB", text_color=TEXT_MAIN, height=45)
+        self.chat_input.pack(side="left", fill="x", expand=True, padx=(0, 10))
+        self.chat_input.bind("<Return>", lambda event: self.send_message())
         
-        context_menu = tk.Menu(self.entry_chat, tearoff=0)
-        context_menu.add_command(label="📋 วาง (Paste)", command=paste_text)
+        btn_send = ctk.CTkButton(bottom_frame, text="Send", command=self.send_message, fg_color=ACCENT_PRIMARY, hover_color=ACCENT_HOVER, height=45, width=80)
+        btn_send.pack(side="left")
         
-        def show_context_menu(event):
-            context_menu.tk_popup(event.x_root, event.y_root)
-            
-        self.entry_chat.bind("<Button-2>", show_context_menu) # Mac Right-click
-        self.entry_chat.bind("<Button-3>", show_context_menu) # PC Right-click
+        btn_clear = ctk.CTkButton(bottom_frame, text="Clear", command=self.clear_chat, fg_color="transparent", text_color=TEXT_MUTED, border_width=1, height=45, width=60)
+        btn_clear.pack(side="left", padx=(10, 0))
         
-        btn_send = ctk.CTkButton(input_frame, text="ส่ง", width=80, fg_color=ACCENT_ORANGE, hover_color=ACCENT_HOVER, font=ctk.CTkFont(family="Helvetica", size=16, weight="bold"), command=self.send_ai_message)
-        btn_send.pack(side="right", ipady=8)
+        self.clear_chat()
 
-    def send_ai_message(self):
-        user_msg = self.entry_chat.get().strip()
-        if not user_msg: return
+    def create_monitor(self):
+        frame = ctk.CTkFrame(self.content_container, fg_color="transparent")
+        self.frames["monitor"] = frame
         
-        self.entry_chat.delete(0, 'end')
-        self.chat_history.configure(state="normal")
-        self.chat_history.insert("end", f"◇ คุณ: {user_msg}\n\n")
-        self.chat_history.see("end")
-        self.chat_history.configure(state="disabled")
+        card = ctk.CTkFrame(frame, fg_color=BG_CARD, corner_radius=15)
+        card.pack(fill="x", pady=10)
         
-        def show_loading():
-            self.chat_history.configure(state="normal")
-            self.chat_history.insert("end", "✧ AI: กำลังค้นหาข้อมูลไฟล์...\n\n")
-            self.chat_history.see("end")
-            self.chat_history.configure(state="disabled")
-            
-        self.after(0, show_loading)
+        ctk.CTkLabel(card, text="Auto Monitor (Watchdog)", font=ctk.CTkFont(size=18, weight="bold"), text_color=TEXT_MAIN).pack(anchor="w", padx=20, pady=(20,5))
+        ctk.CTkLabel(card, text="Automatically organize files as they arrive in the target folder.", text_color=TEXT_MUTED).pack(anchor="w", padx=20, pady=(0,20))
         
-        def fetch_ai():
-            reply = self.ai_assistant.ask_ai(self.current_folder, user_msg)
-            
-            def update_reply():
-                self.chat_history.configure(state="normal")
-                self.chat_history.delete("end-3l", "end") # Remove loading text
-                self.chat_history.insert("end", f"\n✧ AI: ")
-                
-                parts = re.split(r'(\[OPEN:.*?\])', reply)
-                for part in parts:
-                    if part.startswith("[OPEN:") and part.endswith("]"):
-                        rel_path = part[6:-1].strip()
-                        full_path = os.path.join(self.current_folder, rel_path)
-                        
-                        btn = ctk.CTkButton(self.chat_history, text="📂 เปิดไฟล์", width=90, height=24, corner_radius=6,
-                                            fg_color="#F3F4F6", border_width=0,
-                                            hover_color="#E5E7EB", text_color="#111827",
-                                            font=ctk.CTkFont(family="Helvetica", size=12, weight="bold"),
-                                            command=lambda p=full_path: subprocess.run(["open", "-R", p]))
-                                            
-                        self.chat_history.insert("end", " ")
-                        self.chat_history._textbox.window_create("end", window=btn, padx=5, pady=2)
-                        self.chat_history.insert("end", " ")
-                    else:
-                        self.chat_history.insert("end", part)
-                        
-                self.chat_history.insert("end", "\n\n" + "-"*40 + "\n\n")
-                self.chat_history.see("end")
-                self.chat_history.configure(state="disabled")
-                
-            self.after(0, update_reply)
-            
-        threading.Thread(target=fetch_ai, daemon=True).start()
-
-    def create_logs(self):
-        self.frame_logs = ctk.CTkFrame(self.main_frame, fg_color="transparent")
-        header = ctk.CTkFrame(self.frame_logs, fg_color="transparent")
-        header.pack(fill="x", pady=(0, 10))
-        ctk.CTkLabel(header, text="ประวัติการใช้งาน (Action Logs)", font=ctk.CTkFont(family="Helvetica", size=24, weight="bold"), text_color=TEXT_MAIN).pack(side="left")
+        self.switch_watch = ctk.CTkSwitch(card, text="Enable Auto Monitor for Target Folder", progress_color=ACCENT_PRIMARY, command=self.toggle_watch)
+        self.switch_watch.pack(anchor="w", padx=20, pady=(0,20))
         
-        self.btn_undo = ctk.CTkButton(header, text="⟲ ยกเลิกการจัดการไฟล์ล่าสุด (Undo)", fg_color=ACCENT_RED, hover_color=ACCENT_RED_HOVER, font=ctk.CTkFont(family="Helvetica", size=14, weight="bold"), command=self.run_undo)
-        self.btn_undo.pack(side="right")
-        
-        self.log_textbox = ctk.CTkTextbox(self.frame_logs, wrap="word", fg_color=BG_CARD, text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=14), corner_radius=15)
-        self.log_textbox.pack(fill="both", expand=True, pady=10)
+        log_card = ctk.CTkFrame(frame, fg_color=BG_CARD, corner_radius=15)
+        log_card.pack(fill="both", expand=True, pady=10)
+        ctk.CTkLabel(log_card, text="Activity Log", font=ctk.CTkFont(size=16, weight="bold"), text_color=TEXT_MAIN).pack(anchor="w", padx=20, pady=(20,10))
+        self.log_textbox = ctk.CTkTextbox(log_card, fg_color="#F9FAFB", text_color=TEXT_MAIN)
+        self.log_textbox.pack(fill="both", expand=True, padx=20, pady=(0,20))
 
     def create_settings(self):
-        self.frame_settings = ctk.CTkFrame(self.main_frame, fg_color="transparent")
-        card = ctk.CTkFrame(self.frame_settings, fg_color=BG_CARD, corner_radius=15)
-        card.pack(fill="both", expand=True)
-        ctk.CTkLabel(card, text="การตั้งค่าระบบ (Settings)", font=ctk.CTkFont(family="Helvetica", size=24, weight="bold"), text_color=TEXT_MAIN).pack(pady=(30, 20), anchor="w", padx=40)
+        frame = ctk.CTkFrame(self.content_container, fg_color="transparent")
+        self.frames["settings"] = frame
         
+        card = ctk.CTkFrame(frame, fg_color=BG_CARD, corner_radius=15)
+        card.pack(fill="x", pady=10)
         
-        # Excluded Folders UI
-        ctk.CTkLabel(card, text="โฟลเดอร์ยกเว้น (AI และระบบจะไม่ยุ่งกับไฟล์ในนี้):", text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=14, weight="bold")).pack(anchor="w", padx=40, pady=(10,5))
+        ctk.CTkLabel(card, text="Settings", font=ctk.CTkFont(size=20, weight="bold"), text_color=TEXT_MAIN).pack(anchor="w", padx=20, pady=(20, 20))
         
-        ex_frame = ctk.CTkFrame(card, fg_color="transparent")
-        ex_frame.pack(anchor="w", padx=40, fill="x")
+        ctk.CTkLabel(card, text="API Configuration", font=ctk.CTkFont(weight="bold"), text_color=TEXT_MAIN).pack(anchor="w", padx=20)
+        if self.organizer.api_key:
+            ctk.CTkLabel(card, text="✅ Gemini API Connected (Embedded)", text_color=ACCENT_SUCCESS).pack(anchor="w", padx=20, pady=5)
+        else:
+            ctk.CTkLabel(card, text="❌ Gemini API Key Not Found. Some AI features will not work.", text_color=ACCENT_DANGER).pack(anchor="w", padx=20, pady=5)
         
-        self.listbox_excluded = ctk.CTkTextbox(ex_frame, width=380, height=100, fg_color=BG_MAIN, border_color="#D1D5DB", text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=13))
-        self.listbox_excluded.pack(side="left", pady=5)
-        self.update_excluded_listbox()
-        
-        btn_frame = ctk.CTkFrame(ex_frame, fg_color="transparent")
-        btn_frame.pack(side="left", padx=10)
-        
-        btn_add_ex = ctk.CTkButton(btn_frame, text="+ เพิ่มโฟลเดอร์", width=100, fg_color="#374151", hover_color="#1F2937", font=ctk.CTkFont(family="Helvetica", size=13), command=self.add_excluded_folder)
-        btn_add_ex.pack(pady=5)
-        
-        btn_clear_ex = ctk.CTkButton(btn_frame, text="ล้างทั้งหมด", width=100, fg_color=ACCENT_RED, hover_color=ACCENT_RED_HOVER, font=ctk.CTkFont(family="Helvetica", size=13), command=self.clear_excluded_folders)
-        btn_clear_ex.pack(pady=5)
-        
-        btn_save = ctk.CTkButton(card, text="บันทึกการตั้งค่า (Save Settings)", fg_color=ACCENT_ORANGE, hover_color=ACCENT_HOVER, font=ctk.CTkFont(family="Helvetica", size=16, weight="bold"), command=self.save_settings_action)
-        btn_save.pack(anchor="w", padx=40, pady=30)
+        ctk.CTkLabel(card, text="About ZipZap", font=ctk.CTkFont(weight="bold"), text_color=TEXT_MAIN).pack(anchor="w", padx=20, pady=(20,5))
+        ctk.CTkLabel(card, text="Version: 1.0.0\nDeveloped with Python & CustomTkinter\nAI Engine: Google Gemini 1.5 Flash", text_color=TEXT_MUTED, justify="left").pack(anchor="w", padx=20, pady=(0,20))
 
-    # --- Actions ---
+    # ================= LOGIC METHODS =================
 
-    def update_excluded_listbox(self):
-        self.listbox_excluded.configure(state="normal")
-        self.listbox_excluded.delete("1.0", "end")
-        for f in self.config_data.get("excluded_folders", []):
-            self.listbox_excluded.insert("end", f + "\n")
-        self.listbox_excluded.configure(state="disabled")
-
-    def add_excluded_folder(self):
-        folder = filedialog.askdirectory()
-        if folder:
-            ex_list = self.config_data.get("excluded_folders", [])
-            if folder not in ex_list:
-                ex_list.append(folder)
-                self.config_data["excluded_folders"] = ex_list
-                self.save_config("excluded_folders", ex_list)
-                self.update_excluded_listbox()
-                self.sync_excluded_folders()
-
-    def clear_excluded_folders(self):
-        self.config_data["excluded_folders"] = []
-        self.save_config("excluded_folders", [])
-        self.update_excluded_listbox()
-        self.sync_excluded_folders()
-        
     def sync_excluded_folders(self):
-        ex = self.config_data.get("excluded_folders", [])
-        self.organizer.excluded_folders = ex
-        self.cleaner.excluded_folders = ex
-        self.watcher_manager.excluded_folders = ex
+        self.organizer.set_excluded_folders(self.config_data.get("excluded_folders", []))
+        self.cleaner.set_excluded_folders(self.config_data.get("excluded_folders", []))
 
-    def clear_chat(self):
-        self.chat_history.configure(state="normal")
-        self.chat_history.delete("1.0", "end")
-        self.chat_history.insert("end", "✧ AI: สวัสดีครับ! ผมคือผู้ช่วยค้นหาไฟล์ คุณสามารถพิมพ์ถามผมได้เลย เช่น 'มีไฟล์รูปภาพเก่าๆ ของปีที่แล้วไหม?' หรือ 'ในเครื่องมีไฟล์ PDF กี่ไฟล์?'\n\n")
-        self.chat_history.configure(state="disabled")
+    def toggle_watch(self):
+        if self.switch_watch.get() == 1:
+            if not self.current_folder:
+                messagebox.showwarning("แจ้งเตือน", "กรุณาเลือกโฟลเดอร์เป้าหมายก่อนเปิดระบบอัตโนมัติ")
+                self.switch_watch.deselect()
+                return
+            self.watcher_manager.start_watching(self.current_folder)
+            self.log_action(f"✅ เริ่มเฝ้าระวังโฟลเดอร์: {self.current_folder}")
+        else:
+            self.watcher_manager.stop_watching()
+            self.log_action("🛑 หยุดเฝ้าระวังโฟลเดอร์")
+
+    def update_dashboard_stats(self):
+        if not self.current_folder:
+            return
+            
+        def count_files():
+            try:
+                num_files = sum(len(files) for _, _, files in os.walk(self.current_folder))
+                size_bytes = sum(os.path.getsize(os.path.join(r, f)) for r, _, files in os.walk(self.current_folder) for f in files)
+                size_mb = size_bytes / (1024 * 1024)
+                
+                self.after(0, lambda: self.lbl_total_files.configure(text=f"● Total Files: {num_files}"))
+                self.after(0, lambda: self.lbl_folder_size.configure(text=f"● Total Size: {size_mb:.2f} MB"))
+                self.after(0, self.draw_donut)
+            except Exception as e:
+                print("Error calculating stats", e)
+        
+        threading.Thread(target=count_files, daemon=True).start()
+        
+    def draw_donut(self):
+        self.canvas.delete("all")
+        # Draw a simple donut chart
+        self.canvas.create_arc(10, 10, 140, 140, start=0, extent=240, fill=ACCENT_PRIMARY, outline="")
+        self.canvas.create_arc(10, 10, 140, 140, start=240, extent=120, fill="#E5E7EB", outline="")
+        # Inner circle
+        self.canvas.create_oval(35, 35, 115, 115, fill=BG_CARD, outline="")
+        self.canvas.create_text(75, 75, text="Storage", font=("Helvetica", 12, "bold"), fill=TEXT_MAIN)
 
     def select_folder(self):
         folder = filedialog.askdirectory()
         if folder:
             self.current_folder = folder
-            self.lbl_folder.configure(text=f"📂 โฟลเดอร์ปัจจุบัน: {self.current_folder}")
-            self.lbl_stats.configure(text=f"📊 กำลังนับจำนวนไฟล์...")
+            self.lbl_dash_folder.configure(text=folder)
             
-            # Disable buttons while counting
+            # Enable folder dependent buttons
             for b in self.folder_btns:
-                b["btn"].configure(state="disabled")
-            
-            def count_files():
-                num_files = sum(len(files) for _, _, files in os.walk(self.current_folder))
-                self.after(0, lambda: self.lbl_stats.configure(text=f"📊 จำนวนไฟล์ทั้งหมด: {num_files} ไฟล์"))
+                b["btn"].configure(state="normal")
                 
-                # Enable folder dependent buttons
-                for b in self.folder_btns:
-                    self.after(0, lambda b=b: b["btn"].configure(state="normal", fg_color=b["color"], text_color=b["txt_color"]))
-            
-            import threading
-            threading.Thread(target=count_files, daemon=True).start()
+            self.update_dashboard_stats()
 
-    def save_settings_action(self):
-        messagebox.showinfo("บันทึกสำเร็จ", "บันทึกการตั้งค่าเรียบร้อยแล้วครับ")
+    def run_cleaner_scan(self):
+        if not self.current_folder: return
+        self.dash_log.insert("end", f"Scanning {self.current_folder} for junk...\n")
+        messagebox.showinfo("Smart Cleaner", "Scan feature is currently a placeholder for future implementation.")
+
+    def log_action(self, msg):
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        log_msg = f"[{timestamp}] {msg}\n"
+        if hasattr(self, 'dash_log'):
+            self.dash_log.insert("end", log_msg)
+            self.dash_log.see("end")
+        if hasattr(self, 'log_textbox'):
+            self.log_textbox.insert("end", log_msg)
+            self.log_textbox.see("end")
 
     def run_async(self, btn, func, *args):
-        orig_text = ""
         if btn:
-            orig_text = btn.cget("text")
-            btn.configure(text="⏳ กำลังทำงาน...", state="disabled")
-        def wrapper():
-            result, msg = func(*args)
-            if btn:
-                self.after(0, lambda: btn.configure(text=orig_text, state="normal"))
-            if result: messagebox.showinfo("สำเร็จ", msg)
-            else: messagebox.showerror("เกิดข้อผิดพลาด", msg)
-        threading.Thread(target=wrapper, daemon=True).start()
+            btn.configure(state="disabled")
+        
+        def task():
+            try:
+                func(*args)
+                self.log_action(f"✅ Success: Action completed.")
+            except Exception as e:
+                self.log_action(f"❌ Error: {str(e)}")
+            finally:
+                if btn:
+                    self.after(0, lambda: btn.configure(state="normal"))
+        
+        threading.Thread(target=task, daemon=True).start()
 
-    def check_folder(self):
-        if not self.current_folder or not os.path.exists(self.current_folder):
-            messagebox.showwarning("แจ้งเตือน", "กรุณาเลือกโฟลเดอร์เป้าหมายทางด้านบนก่อนใช้งานฟังก์ชันนี้ครับ")
-            return False
-        return True
+    def run_sort_extension(self):
+        if self.current_folder: self.run_async(None, self.organizer.sort_by_extension, self.current_folder)
 
-    def run_sort_extension(self, btn=None):
-        if self.check_folder(): self.run_async(btn, self.organizer.sort_by_extension, self.current_folder)
-    def run_sort_date(self, btn=None):
-        if self.check_folder(): self.run_async(btn, self.organizer.sort_by_date, self.current_folder)
-    def run_remove_duplicates(self, btn=None):
-        if self.check_folder(): self.run_async(btn, self.cleaner.remove_duplicates, self.current_folder)
-    def run_auto_zip(self, btn=None, months=6):
-        if self.check_folder(): self.run_async(btn, self.cleaner.auto_zip_old_files, self.current_folder, months)
-    def run_empty_junk(self, btn=None, days=7):
-        if self.check_folder(): self.run_async(btn, self.cleaner.empty_junk_folder, self.current_folder, days)
+    def run_sort_date(self):
+        if self.current_folder: self.run_async(None, self.organizer.sort_by_date, self.current_folder)
 
-    def run_convert_image(self, btn=None):
-        file = filedialog.askopenfilename(filetypes=[("Image files", "*.heic *.webp *.png *.jpg")])
-        if file: self.run_async(btn, self.converter.convert_image, file, "JPEG")
-    def run_compress_image(self, btn=None, mb_limit=5):
-        file = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.png *.jpeg")])
-        if file: self.run_async(btn, self.converter.compress_image, file, mb_limit)
-    def run_convert_pdf(self, btn=None):
+    def run_convert_image(self):
+        file = filedialog.askopenfilename(filetypes=[("Image files", "*.heic *.webp *.png *.bmp")])
+        if file: self.run_async(None, self.converter.convert_to_jpg, file)
+
+    def run_convert_pdf(self):
         file = filedialog.askopenfilename(filetypes=[("Word Document", "*.docx")])
-        if file: self.run_async(btn, self.converter.convert_docx_to_pdf, file)
-    def run_extract_audio(self, btn=None):
+        if file: self.run_async(None, self.converter.convert_docx_to_pdf, file)
+
+    def run_extract_audio(self):
         file = filedialog.askopenfilename(filetypes=[("Video files", "*.mp4 *.mov *.avi *.mkv")])
-        if file: self.run_async(btn, self.converter.extract_audio, file)
-    def run_smart_rename(self, btn=None):
+        if file: self.run_async(None, self.converter.extract_audio, file)
+
+    def run_smart_rename(self):
         files = filedialog.askopenfilenames(filetypes=[("Supported files", "*.jpg *.png *.jpeg *.webp *.heic *.pdf *.txt"), ("All files", "*.*")])
         if files:
             if not self.organizer.api_key:
@@ -511,48 +508,57 @@ class SmartFileManagerApp(ctk.CTk):
                 
             def batch_rename():
                 success_count = 0
-                errors = []
-                for file in files:
-                    res, msg = self.organizer.smart_rename(file)
-                    if res:
-                        success_count += 1
-                    else:
-                        errors.append(msg)
-                
-                if errors:
-                    return False, f"สำเร็จ {success_count}/{len(files)} ไฟล์\nพบข้อผิดพลาด:\n" + "\n".join(errors[:3])
-                return True, f"เปลี่ยนชื่อไฟล์สำเร็จทั้งหมด {success_count} ไฟล์"
+                for f in files:
+                    try:
+                        self.log_action(f"⏳ กำลังให้ AI วิเคราะห์ไฟล์: {os.path.basename(f)}...")
+                        new_name = self.organizer.smart_rename_with_ai(f)
+                        if new_name:
+                            self.log_action(f"✅ เปลี่ยนชื่อสำเร็จ: {new_name}")
+                            success_count += 1
+                        else:
+                            self.log_action(f"⚠️ ข้ามไฟล์ (AI คิดไม่ออก): {os.path.basename(f)}")
+                    except Exception as e:
+                        err_msg = str(e)
+                        if "INVALID_ARGUMENT" in err_msg or "Cannot extract" in err_msg:
+                            self.log_action(f"❌ ไฟล์เสียหรือไม่รองรับ: {os.path.basename(f)}")
+                        else:
+                            self.log_action(f"❌ เกิดข้อผิดพลาดกับไฟล์ {os.path.basename(f)}: {err_msg}")
+                self.log_action(f"🎉 Smart Rename เสร็จสิ้น! เปลี่ยนไปได้ {success_count}/{len(files)} ไฟล์")
 
-            self.run_async(btn, batch_rename)
+            threading.Thread(target=batch_rename, daemon=True).start()
 
-    def run_undo(self):
-        result, msg = self.logger.undo_last_action()
-        if result:
-            messagebox.showinfo("ย้อนกลับสำเร็จ", msg)
-            self.refresh_logs()
-        else:
-            messagebox.showerror("ไม่สามารถย้อนกลับได้", msg)
+    def clear_chat(self):
+        if hasattr(self, 'chat_history'):
+            self.chat_history.configure(state="normal")
+            self.chat_history.delete("1.0", "end")
+            self.chat_history.insert("end", "✧ AI: Hello! I am your smart assistant. Ask me anything about your files.\n\n")
+            self.chat_history.configure(state="disabled")
 
-    def refresh_logs(self):
-        self.log_textbox.configure(state="normal")
-        self.log_textbox.delete("1.0", "end")
-        if os.path.exists(self.logger.log_txt):
-            with open(self.logger.log_txt, "r", encoding="utf-8") as f:
-                self.log_textbox.insert("end", f.read())
-        self.log_textbox.configure(state="disabled")
-
-    def toggle_watch(self):
-        if self.switch_watch.get() == 1:
-            if self.check_folder():
-                callbacks = {'on_pdf_convert': self.converter.convert_docx_to_pdf, 'on_new_file': lambda path: self.organizer.sort_by_extension(self.current_folder)}
-                res, msg = self.watcher_manager.start_watching(self.current_folder, callbacks)
-                if not res:
-                    messagebox.showerror("เกิดข้อผิดพลาดระบบจับตา", msg)
-                    self.switch_watch.deselect()
-            else:
-                self.switch_watch.deselect()
-        else:
-            self.watcher_manager.stop_watching()
+    def send_message(self):
+        user_msg = self.chat_input.get().strip()
+        if not user_msg:
+            return
+            
+        self.chat_history.configure(state="normal")
+        self.chat_history.insert("end", f"👤 คุณ: {user_msg}\n\n")
+        self.chat_history.see("end")
+        self.chat_history.configure(state="disabled")
+        self.chat_input.delete(0, "end")
+        
+        def fetch_reply():
+            try:
+                reply = self.ai_assistant.ask_about_files(self.current_folder, user_msg)
+            except Exception as e:
+                reply = f"เกิดข้อผิดพลาด: {e}"
+            self.after(0, lambda: self.append_ai_reply(reply))
+            
+        threading.Thread(target=fetch_reply, daemon=True).start()
+        
+    def append_ai_reply(self, reply):
+        self.chat_history.configure(state="normal")
+        self.chat_history.insert("end", f"✧ AI: {reply}\n\n")
+        self.chat_history.see("end")
+        self.chat_history.configure(state="disabled")
 
 if __name__ == "__main__":
     app = SmartFileManagerApp()
