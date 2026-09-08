@@ -30,13 +30,32 @@ class StorageCleaner:
         except Exception:
             return None
 
+    def _get_trash_folder(self, folder_path):
+        return os.path.join(folder_path, ".zipzap_trash")
+
+    def _move_to_trash(self, filepath, trash_folder):
+        """ย้ายไฟล์เข้า trash folder แทนการลบถาวร แล้ว log_move ให้ปุ่ม Undo กู้คืนได้
+        คืนค่า path ปลายทางที่ไฟล์ถูกย้ายไปเก็บ"""
+        os.makedirs(trash_folder, exist_ok=True)
+        filename = os.path.basename(filepath)
+        name, ext = os.path.splitext(filename)
+        trash_path = os.path.join(trash_folder, filename)
+        counter = 1
+        while os.path.exists(trash_path):
+            trash_path = os.path.join(trash_folder, f"{name}_{counter}{ext}")
+            counter += 1
+
+        shutil.move(filepath, trash_path)
+        self.logger.log_move(filepath, trash_path)
+        return trash_path
+
     def remove_duplicates(self, folder_path):
         """สแกนหาไฟล์ที่ซ้ำซ้อนกัน แล้วย้ายไฟล์ที่ซ้ำไปเก็บใน .zipzap_trash (เช็คผ่าน Hash MD5)
         ย้ายแทนการลบถาวร เพื่อให้ใช้ปุ่ม Undo กู้คืนได้เหมือนการย้าย/เปลี่ยนชื่อไฟล์อื่นๆ"""
         if not os.path.exists(folder_path):
             return False, "ไม่พบโฟลเดอร์ที่ระบุ"
 
-        trash_folder = os.path.join(folder_path, ".zipzap_trash")
+        trash_folder = self._get_trash_folder(folder_path)
 
         hashes = {}
         duplicates_removed = 0
@@ -56,16 +75,7 @@ class StorageCleaner:
                         file_size = os.path.getsize(filepath)
                         saved_bytes += file_size
 
-                        os.makedirs(trash_folder, exist_ok=True)
-                        trash_path = os.path.join(trash_folder, filename)
-                        counter = 1
-                        name, ext = os.path.splitext(filename)
-                        while os.path.exists(trash_path):
-                            trash_path = os.path.join(trash_folder, f"{name}_{counter}{ext}")
-                            counter += 1
-
-                        shutil.move(filepath, trash_path)
-                        self.logger.log_move(filepath, trash_path)
+                        self._move_to_trash(filepath, trash_folder)
                         self.logger.log_action("REMOVE_DUPLICATE", f"Moved {filepath} to trash (duplicate of {hashes[file_hash]})")
                         duplicates_removed += 1
                     else:
@@ -88,7 +98,6 @@ class StorageCleaner:
             filepath = os.path.join(folder_path, filename)
             if os.path.isfile(filepath) and not filename.endswith(".zip"):
                 if self._is_excluded(filepath): continue
-                if self._is_excluded(filepath): continue
                 file_age = current_time - os.path.getmtime(filepath)
                 if file_age > six_months_seconds:
                     files_to_zip.append(filepath)
@@ -108,22 +117,27 @@ class StorageCleaner:
         return True, f"บีบอัดไฟล์เก่าจำนวน {len(files_to_zip)} ไฟล์ เป็น {os.path.basename(zip_name)}"
 
     def empty_junk_folder(self, folder_path, days_old=7):
-        """ลบไฟล์ขยะที่อยู่ในโฟลเดอร์ชั่วคราวทิ้งเมื่อครบ x วัน"""
+        """ย้ายไฟล์ขยะที่อยู่ในโฟลเดอร์ชั่วคราวเข้า .zipzap_trash เมื่อครบ x วัน
+        ย้ายแทนการลบถาวร เพื่อให้ใช้ปุ่ม Undo กู้คืนได้"""
         if not os.path.exists(folder_path):
             return False, "ไม่พบโฟลเดอร์ที่ระบุ"
-            
+
+        trash_folder = self._get_trash_folder(folder_path)
         current_time = time.time()
         seven_days_seconds = days_old * 24 * 60 * 60
         deleted_count = 0
-        
+
         for root, dirs, files in os.walk(folder_path):
+            # ห้าม walk เข้าไปใน trash folder เอง ไม่งั้นจะย้ายไฟล์ที่อยู่ใน trash อยู่แล้วซ้ำ
+            dirs[:] = [d for d in dirs if os.path.join(root, d) != trash_folder]
+
             for filename in files:
                 filepath = os.path.join(root, filename)
                 if self._is_excluded(filepath): continue
                 file_age = current_time - os.path.getmtime(filepath)
                 if file_age > seven_days_seconds:
-                    os.remove(filepath)
-                    self.logger.log_action("EMPTY_JUNK", f"Deleted old junk file {filepath}")
+                    self._move_to_trash(filepath, trash_folder)
+                    self.logger.log_action("EMPTY_JUNK", f"Moved old junk file {filepath} to trash")
                     deleted_count += 1
-                    
-        return True, f"ลบไฟล์ขยะที่อายุเกิน {days_old} วันไปแล้วจำนวน {deleted_count} ไฟล์"
+
+        return True, f"ย้ายไฟล์ขยะที่อายุเกิน {days_old} วันไปที่ .zipzap_trash แล้วจำนวน {deleted_count} ไฟล์ (กู้คืนได้ด้วยปุ่ม Undo)"
