@@ -58,6 +58,23 @@ class SmartFileManagerApp(ctk.CTk):
         embedded_key = self.get_embedded_api_key()
         final_key = embedded_key if embedded_key else self.config_data.get("gemini_api_key", "")
         
+        # Set Window Icon
+        try:
+            import sys
+            import tkinter as tk
+            if getattr(sys, 'frozen', False):
+                base_path = sys._MEIPASS
+            else:
+                base_path = os.path.abspath(os.path.dirname(__file__))
+            
+            if os.name == 'nt':
+                self.iconbitmap(os.path.join(base_path, "icon.ico"))
+            else:
+                icon_img = tk.PhotoImage(file=os.path.join(base_path, "icon.png"))
+                self.iconphoto(False, icon_img)
+        except Exception as e:
+            print("Failed to set icon:", e)
+        
         # Instantiate OOP Core Managers
         self.logger = ActionLogger()
         self.converter = FileConverter(self.logger)
@@ -423,14 +440,22 @@ class SmartFileManagerApp(ctk.CTk):
         if folder:
             self.current_folder = folder
             self.lbl_folder.configure(text=f"📂 โฟลเดอร์ปัจจุบัน: {self.current_folder}")
+            self.lbl_stats.configure(text=f"📊 กำลังนับจำนวนไฟล์...")
             
-            # Count files and update stats
-            num_files = sum(len(files) for _, _, files in os.walk(self.current_folder))
-            self.lbl_stats.configure(text=f"📊 จำนวนไฟล์ทั้งหมด: {num_files} ไฟล์")
-            
-            # Enable folder dependent buttons
+            # Disable buttons while counting
             for b in self.folder_btns:
-                b["btn"].configure(state="normal", fg_color=b["color"], text_color=b["txt_color"])
+                b["btn"].configure(state="disabled")
+            
+            def count_files():
+                num_files = sum(len(files) for _, _, files in os.walk(self.current_folder))
+                self.after(0, lambda: self.lbl_stats.configure(text=f"📊 จำนวนไฟล์ทั้งหมด: {num_files} ไฟล์"))
+                
+                # Enable folder dependent buttons
+                for b in self.folder_btns:
+                    self.after(0, lambda b=b: b["btn"].configure(state="normal", fg_color=b["color"], text_color=b["txt_color"]))
+            
+            import threading
+            threading.Thread(target=count_files, daemon=True).start()
 
     def save_settings_action(self):
         messagebox.showinfo("บันทึกสำเร็จ", "บันทึกการตั้งค่าเรียบร้อยแล้วครับ")

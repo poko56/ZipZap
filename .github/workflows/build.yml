@@ -27,7 +27,7 @@ jobs:
       - name: Build Windows Executable
         run: |
           $CTK_PATH = python -c "import customtkinter, os; print(os.path.dirname(customtkinter.__file__), end='')"
-          pyinstaller --noconfirm --onefile --windowed --name "ZipZap" --exclude-module matplotlib --exclude-module scipy --exclude-module pandas --exclude-module IPython --exclude-module PyQt5 --exclude-module PyQt6 --exclude-module googleapiclient --exclude-module google.generativeai --exclude-module test --exclude-module tkinter.test --add-data "$CTK_PATH;customtkinter/" --add-data "api_key.txt;." --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
+          pyinstaller --noconfirm --onefile --windowed --icon "icon.ico" --name "ZipZap" --exclude-module matplotlib --exclude-module scipy --exclude-module pandas --exclude-module IPython --exclude-module PyQt5 --exclude-module PyQt6 --exclude-module googleapiclient --exclude-module google.generativeai --exclude-module test --exclude-module tkinter.test --add-data "$CTK_PATH;customtkinter/" --add-data "api_key.txt;." --add-data "icon.ico;." --add-data "icon.png;." --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
           
       - name: Upload Windows executable
         uses: actions/upload-artifact@v4
@@ -56,7 +56,7 @@ jobs:
       - name: Build Mac App
         run: |
           CTK_PATH=$(python -c "import customtkinter, os; print(os.path.dirname(customtkinter.__file__), end='')")
-          pyinstaller --noconfirm --windowed --name "ZipZap" --exclude-module matplotlib --exclude-module scipy --exclude-module pandas --exclude-module IPython --exclude-module PyQt5 --exclude-module PyQt6 --exclude-module googleapiclient --exclude-module google.generativeai --exclude-module test --exclude-module tkinter.test --add-data "$CTK_PATH:customtkinter/" --add-data "api_key.txt:." --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
+          pyinstaller --noconfirm --windowed --icon "icon.icns" --name "ZipZap" --exclude-module matplotlib --exclude-module scipy --exclude-module pandas --exclude-module IPython --exclude-module PyQt5 --exclude-module PyQt6 --exclude-module googleapiclient --exclude-module google.generativeai --exclude-module test --exclude-module tkinter.test --add-data "$CTK_PATH:customtkinter/" --add-data "api_key.txt:." --add-data "icon.ico:." --add-data "icon.png:." --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
           cd dist && zip -r ZipZap-Mac-App.zip ZipZap.app
           
       - name: Upload Mac App
