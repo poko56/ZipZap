@@ -24,7 +24,7 @@ jobs:
           
       - name: Build Windows Executable
         run: |
-          $CTK_PATH = python -c "import customtkinter, os; print(os.path.dirname(customtkinter.__file__))"
+          $CTK_PATH = python -c "import customtkinter, os; print(os.path.dirname(customtkinter.__file__), end='')"
           pyinstaller --noconfirm --onefile --windowed --name "ZipZap" --add-data "$CTK_PATH;customtkinter/" --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
           
       - name: Upload Windows executable
@@ -51,7 +51,7 @@ jobs:
           
       - name: Build Mac App
         run: |
-          CTK_PATH=$(python -c 'import customtkinter, os; print(os.path.dirname(customtkinter.__file__))')
+          CTK_PATH=$(python -c "import customtkinter, os; print(os.path.dirname(customtkinter.__file__), end='')")
           pyinstaller --noconfirm --windowed --name "ZipZap" --add-data "$CTK_PATH:customtkinter/" --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
           
       - name: Upload Mac App
