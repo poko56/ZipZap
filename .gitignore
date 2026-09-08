@@ -36,3 +36,4 @@ config.json
 SmartMF_App/
 SmartMF_Test_Environment/
 SmartMF.spec
+api_key.txt
