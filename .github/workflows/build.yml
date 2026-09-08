@@ -51,9 +51,10 @@ jobs:
         run: |
           CTK_PATH=$(python -c "import customtkinter, os; print(os.path.dirname(customtkinter.__file__), end='')")
           pyinstaller --noconfirm --windowed --name "ZipZap" --add-data "$CTK_PATH:customtkinter/" --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
+          cd dist && zip -r ZipZap-Mac-App.zip ZipZap.app
           
       - name: Upload Mac App
         uses: actions/upload-artifact@v4
         with:
           name: ZipZap-Mac
-          path: dist/ZipZap.app
+          path: dist/ZipZap-Mac-App.zip
