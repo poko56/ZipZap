@@ -141,4 +141,7 @@ class FileOrganizer:
             return True, f"เปลี่ยนชื่อไฟล์เป็น: {os.path.basename(new_path)}"
             
         except Exception as e:
-            return False, f"เกิดข้อผิดพลาดในการทำ Smart Rename: {str(e)}"
+            error_msg = str(e)
+            if "INVALID_ARGUMENT" in error_msg:
+                return False, "ไฟล์นี้อาจเป็นไฟล์จำลอง (Fake file) หรือไฟล์เสียหาย AI จึงไม่สามารถอ่านเนื้อหาข้างในได้ครับ"
+            return False, f"เกิดข้อผิดพลาดในการทำ Smart Rename: {error_msg}"
