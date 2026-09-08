@@ -19,8 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller
-          pip install -r requirements.txt
+          pip install pyinstaller customtkinter pillow pillow_heif google-genai imageio imageio-ffmpeg moviepy docx2pdf watchdog
           
       - name: Build Windows Executable
         run: |
@@ -46,8 +45,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller
-          pip install -r requirements.txt
+          pip install pyinstaller customtkinter pillow pillow_heif google-genai imageio imageio-ffmpeg moviepy docx2pdf watchdog
           
       - name: Build Mac App
         run: |
