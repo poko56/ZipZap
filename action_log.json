@@ -748,5 +748,395 @@
         "timestamp": "2026-09-07 13:46:36",
         "original_path": "/Users/pokoman/Downloads/MF/TestFolder/backup_db.zip",
         "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Archives/backup_db.zip"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_project_proposal_final.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_project_proposal_final.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_vacation_japan_2024.jpg",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_vacation_japan_2024.jpg"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/IMG_9913.heic",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9913.heic"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_receipt_shopee_jan.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_receipt_shopee_jan.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_presentation_design.pptx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_presentation_design.pptx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/.DS_Store",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Others/.DS_Store"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/receipt_shopee_jan.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_shopee_jan.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/budget_2026.xlsx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2026.xlsx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/vacation_usa_2024.jpg",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_usa_2024.jpg"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_budget_2026.xlsx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_budget_2026.xlsx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_receipt_amazon_mar.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_receipt_amazon_mar.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_project_proposal_v2.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_project_proposal_v2.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_apr.txt",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_apr.txt"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/vacation_usa_2025.jpg",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_usa_2025.jpg"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/raw_camera_photo.jpg",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/raw_camera_photo.jpg"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/receipt_amazon_mar.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_amazon_mar.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/IMG_9908.heic",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9908.heic"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/IMG_9903.heic",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9903.heic"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/vacation_korea_2023.jpg",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_korea_2023.jpg"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/interview_candidate1.mp4",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Videos/interview_candidate1.mp4"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/project_proposal_draft.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_draft.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/presentation_marketing.pptx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_marketing.pptx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_mar.txt",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_mar.txt"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/interview_candidate2.mp4",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Videos/interview_candidate2.mp4"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/IMG_9919.heic",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9919.heic"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/invoice_1018.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1018.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/invoice_1008.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1008.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/backup_files.zip",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Archives/backup_files.zip"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_IMG_9913.heic",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_IMG_9913.heic"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_feb.txt",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_feb.txt"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/vacation_korea_2024.jpg",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_korea_2024.jpg"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_song_rock.mp3",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Audio/duplicate_of_song_rock.mp3"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/song_pop.mp3",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Audio/song_pop.mp3"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/receipt_starbucks_mar.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_starbucks_mar.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/IMG_9902.heic",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9902.heic"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/invoice_1007.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1007.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/report_QQ4.docx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ4.docx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_song_lofi.mp3",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Audio/duplicate_of_song_lofi.mp3"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_may.txt",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_may.txt"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_invoice_1006.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_invoice_1006.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/invoice_1006.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1006.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/IMG_9901.heic",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/IMG_9901.heic"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_budget_2023.xlsx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_budget_2023.xlsx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/budget_2023.xlsx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2023.xlsx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/receipt_apple_mar.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_apple_mar.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/invoice_1011.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1011.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_vacation_thai_2023.jpg",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_vacation_thai_2023.jpg"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/project_proposal_v2.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_v2.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/vacation_thai_2023.jpg",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/vacation_thai_2023.jpg"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/presentation_dev.pptx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_dev.pptx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/receipt_apple_feb.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_apple_feb.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/invoice_1016.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1016.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/invoice_1002.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1002.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/project_proposal_final.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_final.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/project_proposal_v1.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/project_proposal_v1.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/receipt_shopee_feb.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/receipt_shopee_feb.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/invoice_1003.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/invoice_1003.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/budget_2025.xlsx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/budget_2025.xlsx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_screenshot_6.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_screenshot_6.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_report_QQ3.docx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_report_QQ3.docx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_jun.txt",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_jun.txt"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_presentation_dev.pptx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_presentation_dev.pptx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/screenshot_7.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_7.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/song_jazz.mp3",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Audio/song_jazz.mp3"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/report_QQ2.docx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ2.docx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/screenshot_5.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_5.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_screenshot_4.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_screenshot_4.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_screenshot_1.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/duplicate_of_screenshot_1.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/report_QQ3.docx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/report_QQ3.docx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_project_proposal_draft.pdf",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_project_proposal_draft.pdf"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/screenshot_3.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_3.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/presentation_design.pptx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/presentation_design.pptx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/song_lofi.mp3",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Audio/song_lofi.mp3"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/meeting_notes_jan.txt",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/meeting_notes_jan.txt"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/screenshot_2.png",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Images/screenshot_2.png"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_report_QQ2.docx",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Documents/duplicate_of_report_QQ2.docx"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/duplicate_of_backup_config.zip",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Archives/duplicate_of_backup_config.zip"
+    },
+    {
+        "timestamp": "2026-09-07 20:00:58",
+        "original_path": "/Users/pokoman/Downloads/MF/TestFolder/backup_db.zip",
+        "new_path": "/Users/pokoman/Downloads/MF/TestFolder/Archives/backup_db.zip"
     }
 ]

@@ -91,7 +91,7 @@ class FileOrganizer:
         return True, f"จัดกลุ่มตามวันที่สำเร็จจำนวน {moved_count} ไฟล์"
 
     def smart_rename(self, file_path):
-        """วิเคราะห์ภาพด้วย Gemini API แล้วเปลี่ยนชื่อไฟล์ให้สื่อความหมาย"""
+        """วิเคราะห์เนื้อหาไฟล์ด้วย Gemini API แล้วเปลี่ยนชื่อไฟล์ให้สื่อความหมาย"""
         if not self.api_key:
             return False, "กรุณาตั้งค่า Gemini API Key ในเมนูตั้งค่าก่อน"
             
@@ -100,20 +100,42 @@ class FileOrganizer:
         filename, ext = os.path.splitext(os.path.basename(file_path))
         ext = ext.lower()
         
-        prompt = "Please look at this file and suggest a short, meaningful filename (without extension). Use format like YYYYMMDD_StoreName_Amount if it's a receipt, or just a descriptive name with underscores instead of spaces. Reply ONLY with the suggested filename."
+        prompt = "Please analyze this file and suggest a concise, meaningful filename (without extension). If the document or content is in Thai, provide a Thai filename. Use format like YYYYMMDD_Topic or just a descriptive name. Use underscores (_) instead of spaces. Do not use special characters. Reply ONLY with the suggested filename and nothing else."
         
         try:
-            if ext in [".jpg", ".jpeg", ".png", ".webp"]:
+            if ext in [".jpg", ".jpeg", ".png", ".webp", ".heic"]:
+                if ext == ".heic":
+                    try:
+                        import pillow_heif
+                        pillow_heif.register_heif_opener()
+                    except: pass
                 img = Image.open(file_path)
                 response = client.models.generate_content(
-                    model='gemini-flash-lite-latest',
+                    model='gemini-3.6-flash',
                     contents=[prompt, img]
                 )
+            elif ext == ".pdf":
+                uploaded_file = client.files.upload(file=file_path)
+                response = client.models.generate_content(
+                    model='gemini-3.6-flash',
+                    contents=[uploaded_file, prompt]
+                )
+                try:
+                    client.files.delete(name=uploaded_file.name)
+                except:
+                    pass
+            elif ext == ".txt":
+                with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                    text_content = f.read(5000)
+                response = client.models.generate_content(
+                    model='gemini-3.6-flash',
+                    contents=[prompt, f"File content:\n{text_content}"]
+                )
             else:
-                return False, "ฟังก์ชันนี้รองรับเฉพาะไฟล์รูปภาพในตอนนี้"
+                return False, f"ฟังก์ชันนี้ยังไม่รองรับไฟล์นามสกุล {ext}"
                 
-            suggested_name = response.text.strip().replace(" ", "_")
-            for char in ['<', '>', ':', '"', '/', '\\', '|', '?', '*']:
+            suggested_name = response.text.strip().replace(" ", "_").replace("\n", "").replace("\r", "")
+            for char in ['<', '>', ':', '"', '/', '\\', '|', '?', '*', '`', '\'']:
                 suggested_name = suggested_name.replace(char, '')
                 
             new_filename = suggested_name + ext
@@ -129,4 +151,7 @@ class FileOrganizer:
             return True, f"เปลี่ยนชื่อไฟล์เป็น: {os.path.basename(new_path)}"
             
         except Exception as e:
-            return False, f"เกิดข้อผิดพลาดในการทำ Smart Rename: {str(e)}"
+            error_msg = str(e)
+            if "INVALID_ARGUMENT" in error_msg:
+                return False, "ไฟล์นี้อาจเป็นไฟล์จำลอง (Fake file) หรือไฟล์เสียหาย AI จึงไม่สามารถอ่านเนื้อหาข้างในได้ครับ"
+            return False, f"เกิดข้อผิดพลาดในการทำ Smart Rename: {error_msg}"
