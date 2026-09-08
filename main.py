@@ -33,8 +33,8 @@ class SmartFileManagerApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("ระบบจัดการไฟล์อัจฉริยะ (Smart File Manager)")
-        self.geometry("960x680")
+        self.title("ZipZap - ระบบจัดการไฟล์อัจฉริยะ")
+        self.geometry("1000x700")
         self.minsize(900, 650)
         self.configure(fg_color=BG_MAIN)
         
@@ -81,7 +81,7 @@ class SmartFileManagerApp(ctk.CTk):
         self.sidebar_frame.grid(row=0, column=0, sticky="nsew")
         self.sidebar_frame.grid_rowconfigure(5, weight=1)
 
-        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="✦ SmartMF", font=ctk.CTkFont(family="Helvetica", size=24, weight="bold"), text_color=ACCENT_ORANGE)
+        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="✦ ZipZap", font=ctk.CTkFont(family="Helvetica", size=24, weight="bold"), text_color=ACCENT_ORANGE)
         self.logo_label.grid(row=0, column=0, padx=20, pady=(30, 20))
 
         def create_nav_btn(text, row, command):
@@ -200,7 +200,7 @@ class SmartFileManagerApp(ctk.CTk):
                 btn.pack(side="left", fill="x", expand=True)
                 
             if require_folder:
-                btn.configure(state="disabled", fg_color="#F3F4F6", text_color="#9CA3AF")
+                btn.configure(state="disabled", fg_color="#374151", text_color="#9CA3AF")
                 self.folder_btns.append({"btn": btn, "color": color, "txt_color": txt_color})
             return btn
 
@@ -213,12 +213,13 @@ class SmartFileManagerApp(ctk.CTk):
         # 2. Organizer Tab
         create_tool_btn(tab_org, "📋  จัดกลุ่มไฟล์ตามประเภท (รูป, วิดีโอ, เอกสาร)", "ระบบจะย้ายไฟล์ในโฟลเดอร์เป้าหมายไปจัดกลุ่มให้เป็นหมวดหมู่ (เช่นโฟลเดอร์ Images, Videos)", self.run_sort_extension, require_folder=True)
         create_tool_btn(tab_org, "📅  จัดกลุ่มไฟล์ตามเดือนและปีที่สร้าง", "ย้ายไฟล์ทั้งหมดเข้าโฟลเดอร์ที่แบ่งตาม ปีและเดือนที่สร้างไฟล์ เหมาะสำหรับรูปถ่าย", self.run_sort_date, require_folder=True)
-        
-        btn_smart = ctk.CTkButton(tab_org, text="✧  ให้ AI ช่วยตั้งชื่อไฟล์ให้ใหม่ (Smart Rename)", command=None,
+        frame_smart = ctk.CTkFrame(tab_org, fg_color="transparent")
+        frame_smart.pack(pady=10, padx=20, fill="x")
+        btn_smart = ctk.CTkButton(frame_smart, text="✧  ให้ AI ช่วยตั้งชื่อไฟล์ให้ใหม่ (Smart Rename)", command=None,
                                   fg_color=ACCENT_ORANGE, text_color="#FFF", hover_color=ACCENT_HOVER,
                                   font=ctk.CTkFont(family="Helvetica", size=15, weight="bold"), height=45, anchor="w")
         btn_smart.configure(command=lambda b=btn_smart: self.run_smart_rename(b))
-        btn_smart.pack(pady=15, padx=20, fill="x")
+        btn_smart.pack(side="left", fill="x", expand=True)
 
         # 3. Cleanup Tab
         create_tool_btn(tab_clean, "📑  ค้นหาและลบไฟล์ที่ซ้ำกัน", "สแกนหาไฟล์ที่มีเนื้อหาเหมือนกันเป๊ะในโฟลเดอร์เป้าหมาย และลบทิ้งให้เหลือแค่อันเดียว", self.run_remove_duplicates, require_folder=True)
@@ -341,6 +342,13 @@ class SmartFileManagerApp(ctk.CTk):
         card.pack(fill="both", expand=True)
         ctk.CTkLabel(card, text="การตั้งค่าระบบ (Settings)", font=ctk.CTkFont(family="Helvetica", size=24, weight="bold"), text_color=TEXT_MAIN).pack(pady=(30, 20), anchor="w", padx=40)
         
+        # API Key UI
+        ctk.CTkLabel(card, text="Gemini API Key (สำหรับ AI):", text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=14, weight="bold")).pack(anchor="w", padx=40, pady=(0,5))
+        self.entry_api = ctk.CTkEntry(card, width=380, placeholder_text="ใส่ API Key ที่นี่...", fg_color=BG_MAIN, border_color="#D1D5DB", text_color=TEXT_MAIN, show="*")
+        self.entry_api.pack(anchor="w", padx=40, pady=(0, 20))
+        if self.config_data.get("gemini_api_key"):
+            self.entry_api.insert(0, self.config_data.get("gemini_api_key"))
+        
         # Excluded Folders UI
         ctk.CTkLabel(card, text="โฟลเดอร์ยกเว้น (AI และระบบจะไม่ยุ่งกับไฟล์ในนี้):", text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=14, weight="bold")).pack(anchor="w", padx=40, pady=(10,5))
         
@@ -416,6 +424,12 @@ class SmartFileManagerApp(ctk.CTk):
                 b["btn"].configure(state="normal", fg_color=b["color"], text_color=b["txt_color"])
 
     def save_settings_action(self):
+        new_key = self.entry_api.get().strip()
+        self.config_data["gemini_api_key"] = new_key
+        self.save_config("gemini_api_key", new_key)
+        self.organizer.api_key = new_key
+        if hasattr(self, 'ai_assistant'):
+            self.ai_assistant.api_key = new_key
         messagebox.showinfo("บันทึกสำเร็จ", "บันทึกการตั้งค่าเรียบร้อยแล้วครับ")
 
     def run_async(self, btn, func, *args):
@@ -461,12 +475,27 @@ class SmartFileManagerApp(ctk.CTk):
         file = filedialog.askopenfilename(filetypes=[("Video files", "*.mp4 *.mov *.avi *.mkv")])
         if file: self.run_async(btn, self.converter.extract_audio, file)
     def run_smart_rename(self, btn=None):
-        file = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.png *.jpeg *.webp")])
-        if file:
+        files = filedialog.askopenfilenames(filetypes=[("Supported files", "*.jpg *.png *.jpeg *.webp *.heic *.pdf *.txt"), ("All files", "*.*")])
+        if files:
             if not self.organizer.api_key:
                 messagebox.showwarning("แจ้งเตือน", "ยังไม่ได้ใส่ API Key ของ Gemini กรุณาตั้งค่าก่อนใช้งานในแท็บ Settings ครับ")
                 return
-            self.run_async(btn, self.organizer.smart_rename, file)
+                
+            def batch_rename():
+                success_count = 0
+                errors = []
+                for file in files:
+                    res, msg = self.organizer.smart_rename(file)
+                    if res:
+                        success_count += 1
+                    else:
+                        errors.append(msg)
+                
+                if errors:
+                    return False, f"สำเร็จ {success_count}/{len(files)} ไฟล์\nพบข้อผิดพลาด:\n" + "\n".join(errors[:3])
+                return True, f"เปลี่ยนชื่อไฟล์สำเร็จทั้งหมด {success_count} ไฟล์"
+
+            self.run_async(btn, batch_rename)
 
     def run_undo(self):
         result, msg = self.logger.undo_last_action()
