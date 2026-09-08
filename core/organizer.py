@@ -101,13 +101,13 @@ class FileOrganizer:
                     except: pass
                 img = Image.open(file_path)
                 response = client.models.generate_content(
-                    model='gemini-2.5-flash',
+                    model='gemini-3.6-flash',
                     contents=[prompt, img]
                 )
             elif ext == ".pdf":
                 uploaded_file = client.files.upload(file=file_path)
                 response = client.models.generate_content(
-                    model='gemini-2.5-flash',
+                    model='gemini-3.6-flash',
                     contents=[uploaded_file, prompt]
                 )
                 try:
@@ -118,7 +118,7 @@ class FileOrganizer:
                 with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
                     text_content = f.read(5000)
                 response = client.models.generate_content(
-                    model='gemini-2.5-flash',
+                    model='gemini-3.6-flash',
                     contents=[prompt, f"File content:\n{text_content}"]
                 )
             else:
