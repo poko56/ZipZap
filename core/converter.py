@@ -14,7 +14,7 @@ class FileConverter:
         """
         self.logger = logger
 
-    def convert_image(self, input_path, output_format="JPEG"):
+    def convert_image(self, input_path, output_format="JPEG", output_dir=None):
         """แปลงไฟล์รูปภาพที่เปิดยากให้เป็น .jpg หรือ .png"""
         try:
             if not os.path.exists(input_path):
@@ -22,7 +22,9 @@ class FileConverter:
                 
             filename, _ = os.path.splitext(os.path.basename(input_path))
             ext = ".jpg" if output_format.upper() in ["JPEG", "JPG"] else ".png"
-            output_path = os.path.join(os.path.dirname(input_path), filename + ext)
+            
+            target_dir = output_dir if output_dir else os.path.dirname(input_path)
+            output_path = os.path.join(target_dir, filename + ext)
             
             img = Image.open(input_path)
             if output_format.upper() in ["JPEG", "JPG"] and img.mode in ("RGBA", "P"):
@@ -34,7 +36,7 @@ class FileConverter:
         except Exception as e:
             return False, f"แปลงรูปภาพไม่สำเร็จ: {str(e)}"
 
-    def compress_image(self, input_path, max_size_mb=5):
+    def compress_image(self, input_path, max_size_mb=5, output_dir=None):
         """ลดขนาดรูปภาพที่มีขนาดใหญ่เกิน max_size_mb"""
         try:
             file_size_mb = os.path.getsize(input_path) / (1024 * 1024)
@@ -46,7 +48,8 @@ class FileConverter:
                 img = img.convert("RGB")
                 
             filename, ext = os.path.splitext(os.path.basename(input_path))
-            output_path = os.path.join(os.path.dirname(input_path), filename + "_compressed.jpg")
+            target_dir = output_dir if output_dir else os.path.dirname(input_path)
+            output_path = os.path.join(target_dir, filename + "_compressed.jpg")
             img.save(output_path, "JPEG", quality=75, optimize=True)
             
             self.logger.log_action("COMPRESS_IMAGE", f"Compressed {os.path.basename(input_path)} (was {file_size_mb:.2f}MB)")
@@ -54,26 +57,52 @@ class FileConverter:
         except Exception as e:
             return False, f"บีบอัดรูปภาพไม่สำเร็จ: {str(e)}"
 
-    def convert_docx_to_pdf(self, input_path):
+    def convert_docx_to_pdf(self, input_path, output_dir=None):
         """แปลงไฟล์ Word เป็น PDF"""
+        import shutil
         try:
             if not input_path.lower().endswith(".docx"):
                 return False, "รองรับเฉพาะไฟล์ .docx เท่านั้นในตอนนี้"
                 
-            output_path = os.path.splitext(input_path)[0] + ".pdf"
-            convert(input_path, output_path)
+            filename = os.path.splitext(os.path.basename(input_path))[0]
+            target_dir = output_dir if output_dir else os.path.dirname(input_path)
+            output_path = os.path.join(target_dir, filename + ".pdf")
+            
+            # Workaround for macOS Word Sandboxing issue
+            sandbox_dir = os.path.expanduser("~/Library/Containers/com.microsoft.Word/Data/Documents/")
+            if os.path.exists(sandbox_dir):
+                import uuid
+                temp_id = str(uuid.uuid4())[:8]
+                temp_docx = os.path.join(sandbox_dir, f"temp_{temp_id}.docx")
+                temp_pdf = os.path.join(sandbox_dir, f"temp_{temp_id}.pdf")
+                
+                shutil.copy2(input_path, temp_docx)
+                convert(temp_docx, temp_pdf)
+                shutil.copy2(temp_pdf, output_path)
+                
+                try:
+                    os.remove(temp_docx)
+                    os.remove(temp_pdf)
+                except:
+                    pass
+            else:
+                # Fallback to standard if not on Mac or sandbox not found
+                convert(input_path, output_path)
+                
             self.logger.log_action("CONVERT_PDF", f"Converted {os.path.basename(input_path)} to PDF")
             return True, output_path
         except Exception as e:
             return False, f"แปลงเป็น PDF ไม่สำเร็จ: {str(e)}"
 
-    def extract_audio(self, input_path):
+    def extract_audio(self, input_path, output_dir=None):
         """ดึงเสียงออกจากวิดีโอ (MP4 -> MP3)"""
         try:
             if not input_path.lower().endswith((".mp4", ".mov", ".mkv", ".avi")):
                 return False, "ไม่รองรับไฟล์วิดีโอนามสกุลนี้"
                 
-            output_path = os.path.splitext(input_path)[0] + ".mp3"
+            filename = os.path.splitext(os.path.basename(input_path))[0]
+            target_dir = output_dir if output_dir else os.path.dirname(input_path)
+            output_path = os.path.join(target_dir, filename + ".mp3")
             video = VideoFileClip(input_path)
             video.audio.write_audiofile(output_path, logger=None)
             video.close()
