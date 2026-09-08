@@ -1,5 +1,8 @@
 import os
+import re
+import sys
 import json
+import subprocess
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -936,12 +939,27 @@ class SmartFileManagerApp(ctk.CTk):
         self.btn_cleanup.configure(state="disabled", text="Cleaning...")
         
         def _task():
-            count, saved_mb = self.cleaner.clean_files(paths)
-            self.after(0, lambda: messagebox.showinfo("Smart Cleaner", f"ทำความสะอาดเรียบร้อย!\nลบไฟล์ {count} ไฟล์\nได้พื้นที่คืนมา {saved_mb:.2f} MB"))
+            count, saved_mb = self.cleaner.clean_files(paths, base_folder=self.current_folder)
+            self.after(0, lambda: messagebox.showinfo("Smart Cleaner", f"ทำความสะอาดเรียบร้อย!\nย้ายไฟล์ {count} ไฟล์ไปที่ .zipzap_trash\nได้พื้นที่คืนมา {saved_mb:.2f} MB\n\nกู้คืนได้ด้วยปุ่ม Undo"))
             self.after(0, self.update_dashboard_stats)
             self.after(0, self.run_cleaner_scan) # Rescan to refresh UI
 
         threading.Thread(target=_task, daemon=True).start()
+
+    def open_file_location(self, path):
+        """เปิด Explorer/Finder แล้วเลือกไฟล์ที่ระบุ รองรับทั้ง Windows, macOS, Linux"""
+        if not os.path.exists(path):
+            messagebox.showerror("ไม่พบไฟล์", f"ไม่พบไฟล์ที่ระบุ:\n{path}")
+            return
+        try:
+            if sys.platform.startswith("win"):
+                subprocess.run(["explorer", "/select,", os.path.normpath(path)])
+            elif sys.platform == "darwin":
+                subprocess.run(["open", "-R", path])
+            else:
+                subprocess.run(["xdg-open", os.path.dirname(path)])
+        except Exception as e:
+            messagebox.showerror("เกิดข้อผิดพลาด", f"ไม่สามารถเปิดไฟล์ได้: {str(e)}")
 
     def log_action(self, msg):
         timestamp = datetime.now().strftime("%H:%M:%S")
@@ -1046,11 +1064,50 @@ class SmartFileManagerApp(ctk.CTk):
         
         name = "คุณ" if is_user else "ZipZap AI"
         ctk.CTkLabel(text_frame, text=name, font=ctk.CTkFont(weight="bold", size=15), text_color=TEXT_MAIN).pack(anchor="w", pady=(0, 5))
-        
-        lbl = ctk.CTkLabel(text_frame, text=text, text_color=TEXT_MAIN, font=ctk.CTkFont(size=14), wraplength=700, justify="left")
-        lbl.pack(anchor="w")
-        
+
+        self._render_message_body(text_frame, text)
+
         self.after(50, lambda: self.chat_history_frame._parent_canvas.yview_moveto(1.0))
+
+    # จับ marker ทั้งก้อนไว้ใน group เดียว เพื่อให้ re.split คืน marker กลับมาในลิสต์ด้วย
+    # แล้วแยกแยะด้วย startswith ตรงๆ (ไม่ต้องเดาจากลำดับ ซึ่งเพี้ยนได้เมื่อข้อความขึ้นต้น
+    # หรือลงท้ายด้วย marker พอดี)
+    OPEN_MARKER_RE = re.compile(r'(\[OPEN:\s*[^\]]*\])')
+
+    def _render_message_body(self, parent, text):
+        """แสดงข้อความ พร้อมแปลง marker [OPEN: path] เป็นปุ่มเปิดไฟล์
+
+        ai_assistant.py สั่งให้ Gemini แนบ [OPEN: path] ทุกครั้งที่พูดถึงไฟล์ ถ้าไม่แปลงตรงนี้
+        marker จะหลุดไปโชว์เป็นข้อความดิบให้ผู้ใช้เห็น
+        """
+        for segment in self.OPEN_MARKER_RE.split(text):
+            if not segment:
+                continue
+
+            if segment.startswith("[OPEN:") and segment.endswith("]"):
+                rel_path = segment[len("[OPEN:"):-1].strip()
+                if not rel_path:
+                    continue
+                full_path = os.path.join(self.current_folder, rel_path) if self.current_folder else rel_path
+                btn = ctk.CTkButton(
+                    parent,
+                    text=f"📂 เปิดไฟล์: {os.path.basename(rel_path)}",
+                    height=30,
+                    corner_radius=8,
+                    fg_color=ACCENT_PRIMARY,
+                    hover_color=ACCENT_HOVER,
+                    font=ctk.CTkFont(size=13, weight="bold"),
+                    command=lambda p=full_path: self.open_file_location(p),
+                )
+                btn.pack(anchor="w", pady=4)
+            else:
+                stripped = segment.strip()
+                if not stripped:
+                    continue
+                ctk.CTkLabel(
+                    parent, text=stripped, text_color=TEXT_MAIN,
+                    font=ctk.CTkFont(size=14), wraplength=700, justify="left",
+                ).pack(anchor="w")
 
     def clear_chat(self):
         if hasattr(self, 'chat_history_frame'):
