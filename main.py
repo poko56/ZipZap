@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import customtkinter as ctk
 import tkinter as tk
@@ -307,7 +308,7 @@ class SmartFileManagerApp(ctk.CTk):
                                             fg_color="#F3F4F6", border_width=0,
                                             hover_color="#E5E7EB", text_color="#111827",
                                             font=ctk.CTkFont(family="Helvetica", size=12, weight="bold"),
-                                            command=lambda p=full_path: subprocess.run(["open", "-R", p]))
+                                            command=lambda p=full_path: self.open_file_location(p))
                                             
                         self.chat_history.insert("end", " ")
                         self.chat_history._textbox.window_create("end", window=btn, padx=5, pady=2)
@@ -436,6 +437,21 @@ class SmartFileManagerApp(ctk.CTk):
             messagebox.showwarning("แจ้งเตือน", "กรุณาเลือกโฟลเดอร์เป้าหมายทางด้านบนก่อนใช้งานฟังก์ชันนี้ครับ")
             return False
         return True
+
+    def open_file_location(self, path):
+        """เปิด Explorer/Finder แล้วเลือกไฟล์ที่ระบุ รองรับทั้ง Windows, macOS, Linux"""
+        if not os.path.exists(path):
+            messagebox.showerror("ไม่พบไฟล์", f"ไม่พบไฟล์ที่ระบุ: {path}")
+            return
+        try:
+            if sys.platform.startswith("win"):
+                subprocess.run(["explorer", "/select,", os.path.normpath(path)])
+            elif sys.platform == "darwin":
+                subprocess.run(["open", "-R", path])
+            else:
+                subprocess.run(["xdg-open", os.path.dirname(path)])
+        except Exception as e:
+            messagebox.showerror("เกิดข้อผิดพลาด", f"ไม่สามารถเปิดไฟล์ได้: {str(e)}")
 
     def run_sort_extension(self, btn=None):
         if self.check_folder(): self.run_async(btn, self.organizer.sort_by_extension, self.current_folder)

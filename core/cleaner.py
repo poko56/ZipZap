@@ -31,32 +31,48 @@ class StorageCleaner:
             return None
 
     def remove_duplicates(self, folder_path):
-        """สแกนหาไฟล์ที่ซ้ำซ้อนกัน และลบไฟล์ที่ซ้ำทิ้ง (เช็คผ่าน Hash MD5)"""
+        """สแกนหาไฟล์ที่ซ้ำซ้อนกัน แล้วย้ายไฟล์ที่ซ้ำไปเก็บใน .zipzap_trash (เช็คผ่าน Hash MD5)
+        ย้ายแทนการลบถาวร เพื่อให้ใช้ปุ่ม Undo กู้คืนได้เหมือนการย้าย/เปลี่ยนชื่อไฟล์อื่นๆ"""
         if not os.path.exists(folder_path):
             return False, "ไม่พบโฟลเดอร์ที่ระบุ"
-            
+
+        trash_folder = os.path.join(folder_path, ".zipzap_trash")
+
         hashes = {}
         duplicates_removed = 0
         saved_bytes = 0
-        
-        for root, _, files in os.walk(folder_path):
+
+        for root, dirs, files in os.walk(folder_path):
+            # ห้าม walk เข้าไปใน trash folder เอง ไม่งั้นไฟล์ที่ย้ายไปแล้วจะถูกเช็คซ้ำ
+            dirs[:] = [d for d in dirs if os.path.join(root, d) != trash_folder]
+
             for filename in files:
                 filepath = os.path.join(root, filename)
                 if self._is_excluded(filepath): continue
                 file_hash = self._get_file_hash(filepath)
-                
+
                 if file_hash:
                     if file_hash in hashes:
                         file_size = os.path.getsize(filepath)
                         saved_bytes += file_size
-                        os.remove(filepath)
-                        self.logger.log_action("REMOVE_DUPLICATE", f"Deleted {filepath} (duplicate of {hashes[file_hash]})")
+
+                        os.makedirs(trash_folder, exist_ok=True)
+                        trash_path = os.path.join(trash_folder, filename)
+                        counter = 1
+                        name, ext = os.path.splitext(filename)
+                        while os.path.exists(trash_path):
+                            trash_path = os.path.join(trash_folder, f"{name}_{counter}{ext}")
+                            counter += 1
+
+                        shutil.move(filepath, trash_path)
+                        self.logger.log_move(filepath, trash_path)
+                        self.logger.log_action("REMOVE_DUPLICATE", f"Moved {filepath} to trash (duplicate of {hashes[file_hash]})")
                         duplicates_removed += 1
                     else:
                         hashes[file_hash] = filepath
-                        
+
         saved_mb = saved_bytes / (1024 * 1024)
-        return True, f"ลบไฟล์ซ้ำ {duplicates_removed} ไฟล์ | ได้พื้นที่คืนมา {saved_mb:.2f} MB"
+        return True, f"ย้ายไฟล์ซ้ำ {duplicates_removed} ไฟล์ไปที่ .zipzap_trash | ได้พื้นที่คืนมา {saved_mb:.2f} MB (กู้คืนได้ด้วยปุ่ม Undo)"
 
     def auto_zip_old_files(self, folder_path, months_old=6):
         """ตรวจสอบไฟล์ที่ไม่ได้ถูกใช้งานเกิน x เดือน แล้วจับบีบอัดเป็น .zip"""

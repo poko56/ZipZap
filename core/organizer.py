@@ -19,6 +19,16 @@ class FileOrganizer:
             except ValueError: pass
         return False
 
+    def _get_safe_target_path(self, target_folder, filename):
+        """ถ้ามีไฟล์ชื่อซ้ำอยู่แล้วในปลายทาง เติม _1, _2, ... ต่อท้ายกันการเขียนทับ"""
+        name, ext = os.path.splitext(filename)
+        new_path = os.path.join(target_folder, filename)
+        counter = 1
+        while os.path.exists(new_path):
+            new_path = os.path.join(target_folder, f"{name}_{counter}{ext}")
+            counter += 1
+        return new_path
+
     def sort_by_extension(self, folder_path):
         """ย้ายไฟล์เข้าโฟลเดอร์ตามนามสกุล"""
         if not os.path.exists(folder_path):
@@ -48,12 +58,12 @@ class FileOrganizer:
                         
                 target_folder = os.path.join(folder_path, target_folder_name)
                 os.makedirs(target_folder, exist_ok=True)
-                
-                new_path = os.path.join(target_folder, filename)
+
+                new_path = self._get_safe_target_path(target_folder, filename)
                 shutil.move(file_path, new_path)
                 self.logger.log_move(file_path, new_path)
                 moved_count += 1
-                
+
         return True, f"คัดแยกสำเร็จจำนวน {moved_count} ไฟล์"
 
     def sort_by_date(self, folder_path):
@@ -72,12 +82,12 @@ class FileOrganizer:
                 
                 target_folder = os.path.join(folder_path, folder_name)
                 os.makedirs(target_folder, exist_ok=True)
-                
-                new_path = os.path.join(target_folder, filename)
+
+                new_path = self._get_safe_target_path(target_folder, filename)
                 shutil.move(file_path, new_path)
                 self.logger.log_move(file_path, new_path)
                 moved_count += 1
-                
+
         return True, f"จัดกลุ่มตามวันที่สำเร็จจำนวน {moved_count} ไฟล์"
 
     def smart_rename(self, file_path):
