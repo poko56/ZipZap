@@ -1,4 +1,4 @@
-name: Build SmartMF
+name: Build ZipZap
 
 on:
   push:
@@ -25,13 +25,13 @@ jobs:
       - name: Build Windows Executable
         run: |
           $SITEPACKAGES = python -c "import site; print(site.getsitepackages()[1])"
-          pyinstaller --noconfirm --onefile --windowed --name "SmartMF" --add-data "$SITEPACKAGES\customtkinter;customtkinter/" --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
+          pyinstaller --noconfirm --onefile --windowed --name "ZipZap" --add-data "$SITEPACKAGES\customtkinter;customtkinter/" --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
           
-      - name: Upload Windows App
-        uses: actions/upload-artifact@v3
+      - name: Upload Windows executable
+        uses: actions/upload-artifact@v4
         with:
-          name: SmartMF-Windows-Standalone
-          path: dist/SmartMF.exe
+          name: ZipZap-Windows
+          path: dist/ZipZap.exe
 
   build-mac:
     runs-on: macos-latest
@@ -52,10 +52,10 @@ jobs:
       - name: Build Mac App
         run: |
           SITEPACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
-          pyinstaller --noconfirm --windowed --name "SmartMF" --add-data "$SITEPACKAGES/customtkinter:customtkinter/" --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
+          pyinstaller --noconfirm --windowed --name "ZipZap" --add-data "$SITEPACKAGES/customtkinter:customtkinter/" --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
           
       - name: Upload Mac App
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: SmartMF-Mac-Standalone
-          path: dist/SmartMF.app
+          name: ZipZap-Mac
+          path: dist/ZipZap.app
