@@ -9,10 +9,10 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
           
@@ -24,8 +24,8 @@ jobs:
           
       - name: Build Windows Executable
         run: |
-          $SITEPACKAGES = python -c "import site; print(site.getsitepackages()[1])"
-          pyinstaller --noconfirm --onefile --windowed --name "ZipZap" --add-data "$SITEPACKAGES\customtkinter;customtkinter/" --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
+          $CTK_PATH = python -c "import customtkinter, os; print(os.path.dirname(customtkinter.__file__))"
+          pyinstaller --noconfirm --onefile --windowed --name "ZipZap" --add-data "$CTK_PATH;customtkinter/" --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
           
       - name: Upload Windows executable
         uses: actions/upload-artifact@v4
@@ -36,10 +36,10 @@ jobs:
   build-mac:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
           
@@ -51,8 +51,8 @@ jobs:
           
       - name: Build Mac App
         run: |
-          SITEPACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
-          pyinstaller --noconfirm --windowed --name "ZipZap" --add-data "$SITEPACKAGES/customtkinter:customtkinter/" --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
+          CTK_PATH=$(python -c 'import customtkinter, os; print(os.path.dirname(customtkinter.__file__))')
+          pyinstaller --noconfirm --windowed --name "ZipZap" --add-data "$CTK_PATH:customtkinter/" --copy-metadata imageio --copy-metadata docx2pdf --copy-metadata google-genai --copy-metadata pillow-heif main.py
           
       - name: Upload Mac App
         uses: actions/upload-artifact@v4
