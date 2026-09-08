@@ -30,6 +30,18 @@ ctk.set_appearance_mode("Light")
 
 
 class SmartFileManagerApp(ctk.CTk):
+    def get_embedded_api_key(self):
+        import sys
+        if getattr(sys, 'frozen', False):
+            base_path = sys._MEIPASS
+        else:
+            base_path = os.path.abspath(os.path.dirname(__file__))
+        key_path = os.path.join(base_path, "api_key.txt")
+        if os.path.exists(key_path):
+            with open(key_path, "r", encoding="utf-8") as f:
+                return f.read().strip()
+        return ""
+
     def __init__(self):
         super().__init__()
 
@@ -43,13 +55,16 @@ class SmartFileManagerApp(ctk.CTk):
         self.current_folder = ""
         self.folder_btns = []
         
+        embedded_key = self.get_embedded_api_key()
+        final_key = embedded_key if embedded_key else self.config_data.get("gemini_api_key", "")
+        
         # Instantiate OOP Core Managers
         self.logger = ActionLogger()
         self.converter = FileConverter(self.logger)
-        self.organizer = FileOrganizer(self.logger, self.config_data.get("gemini_api_key", ""))
+        self.organizer = FileOrganizer(self.logger, final_key)
         self.cleaner = StorageCleaner(self.logger)
         self.watcher_manager = WatcherManager(self.logger)
-        self.ai_assistant = AIAssistant(self.config_data.get("gemini_api_key", ""))
+        self.ai_assistant = AIAssistant(final_key)
         self.sync_excluded_folders()
 
         self.setup_ui()
@@ -342,12 +357,6 @@ class SmartFileManagerApp(ctk.CTk):
         card.pack(fill="both", expand=True)
         ctk.CTkLabel(card, text="การตั้งค่าระบบ (Settings)", font=ctk.CTkFont(family="Helvetica", size=24, weight="bold"), text_color=TEXT_MAIN).pack(pady=(30, 20), anchor="w", padx=40)
         
-        # API Key UI
-        ctk.CTkLabel(card, text="Gemini API Key (สำหรับ AI):", text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=14, weight="bold")).pack(anchor="w", padx=40, pady=(0,5))
-        self.entry_api = ctk.CTkEntry(card, width=380, placeholder_text="ใส่ API Key ที่นี่...", fg_color=BG_MAIN, border_color="#D1D5DB", text_color=TEXT_MAIN, show="*")
-        self.entry_api.pack(anchor="w", padx=40, pady=(0, 20))
-        if self.config_data.get("gemini_api_key"):
-            self.entry_api.insert(0, self.config_data.get("gemini_api_key"))
         
         # Excluded Folders UI
         ctk.CTkLabel(card, text="โฟลเดอร์ยกเว้น (AI และระบบจะไม่ยุ่งกับไฟล์ในนี้):", text_color=TEXT_MAIN, font=ctk.CTkFont(family="Helvetica", size=14, weight="bold")).pack(anchor="w", padx=40, pady=(10,5))
@@ -424,12 +433,6 @@ class SmartFileManagerApp(ctk.CTk):
                 b["btn"].configure(state="normal", fg_color=b["color"], text_color=b["txt_color"])
 
     def save_settings_action(self):
-        new_key = self.entry_api.get().strip()
-        self.config_data["gemini_api_key"] = new_key
-        self.save_config("gemini_api_key", new_key)
-        self.organizer.api_key = new_key
-        if hasattr(self, 'ai_assistant'):
-            self.ai_assistant.api_key = new_key
         messagebox.showinfo("บันทึกสำเร็จ", "บันทึกการตั้งค่าเรียบร้อยแล้วครับ")
 
     def run_async(self, btn, func, *args):
@@ -478,7 +481,7 @@ class SmartFileManagerApp(ctk.CTk):
         files = filedialog.askopenfilenames(filetypes=[("Supported files", "*.jpg *.png *.jpeg *.webp *.heic *.pdf *.txt"), ("All files", "*.*")])
         if files:
             if not self.organizer.api_key:
-                messagebox.showwarning("แจ้งเตือน", "ยังไม่ได้ใส่ API Key ของ Gemini กรุณาตั้งค่าก่อนใช้งานในแท็บ Settings ครับ")
+                messagebox.showwarning("แจ้งเตือน", "ไม่พบ API Key ของ Gemini กรุณาแพ็คแอปใหม่พร้อมกับ API Key ครับ")
                 return
                 
             def batch_rename():
