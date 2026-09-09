@@ -30,13 +30,39 @@ class StorageCleaner:
         except Exception:
             return None
 
+    TRASH_DIR_NAME = ".zipzap_trash"
+
+    def _get_trash_folder(self, base_folder):
+        return os.path.join(base_folder, self.TRASH_DIR_NAME)
+
+    def _prune_trash_dirs(self, root, dirs):
+        """ตัด .zipzap_trash ออกจากการ walk ไฟล์ที่ย้ายเข้า trash แล้วจะได้ไม่ถูกสแกนซ้ำ"""
+        dirs[:] = [d for d in dirs if d != self.TRASH_DIR_NAME]
+
+    def _move_to_trash(self, filepath, trash_folder):
+        """ย้ายไฟล์เข้า trash folder แทนการลบถาวร แล้ว log_move ให้ปุ่ม Undo กู้คืนได้
+        คืนค่า path ปลายทางที่ไฟล์ถูกย้ายไปเก็บ"""
+        os.makedirs(trash_folder, exist_ok=True)
+        filename = os.path.basename(filepath)
+        name, ext = os.path.splitext(filename)
+        trash_path = os.path.join(trash_folder, filename)
+        counter = 1
+        while os.path.exists(trash_path):
+            trash_path = os.path.join(trash_folder, f"{name}_{counter}{ext}")
+            counter += 1
+
+        shutil.move(filepath, trash_path)
+        self.logger.log_move(filepath, trash_path)
+        return trash_path
+
     def scan_duplicates(self, folder_path):
         """Scan and return a list of duplicate files dicts: {'path': p, 'size': s, 'original': org}"""
         results = []
         if not os.path.exists(folder_path): return results
-        
+
         hashes = {}
-        for root, _, files in os.walk(folder_path):
+        for root, dirs, files in os.walk(folder_path):
+            self._prune_trash_dirs(root, dirs)
             for filename in files:
                 filepath = os.path.join(root, filename)
                 if self._is_excluded(filepath): continue
@@ -57,7 +83,8 @@ class StorageCleaner:
         if not os.path.exists(folder_path): return results
         junk_exts = ['.tmp', '.log', '.cache', '.bak', '.dat']
         
-        for root, _, files in os.walk(folder_path):
+        for root, dirs, files in os.walk(folder_path):
+            self._prune_trash_dirs(root, dirs)
             for filename in files:
                 filepath = os.path.join(root, filename)
                 if self._is_excluded(filepath): continue
@@ -77,7 +104,8 @@ class StorageCleaner:
         old_seconds = days_old * 24 * 60 * 60
         current_time = time.time()
         
-        for root, _, files in os.walk(folder_path):
+        for root, dirs, files in os.walk(folder_path):
+            self._prune_trash_dirs(root, dirs)
             for filename in files:
                 filepath = os.path.join(root, filename)
                 if self._is_excluded(filepath): continue
@@ -90,20 +118,28 @@ class StorageCleaner:
                 except: pass
         return results
 
-    def clean_files(self, file_paths):
-        """Delete files from a provided list and return space saved"""
+    def clean_files(self, file_paths, base_folder=None):
+        """ย้ายไฟล์ในลิสต์เข้า .zipzap_trash แทนการลบถาวร แล้วคืนค่าจำนวนไฟล์กับพื้นที่ที่ได้คืน
+
+        ย้ายแทน os.remove เพราะ log_move ทำให้ปุ่ม Undo กู้ไฟล์กลับได้เหมือนการย้าย/เปลี่ยนชื่อ
+        อื่นๆ ในโปรแกรม (ของเดิมลบทิ้งถาวร กดพลาดแล้วไฟล์หายเลย)
+
+        :param base_folder: โฟลเดอร์ที่จะสร้าง .zipzap_trash ไว้ข้างใน ถ้าไม่ระบุจะใช้โฟลเดอร์
+                            ที่ไฟล์นั้นอยู่ (กันเคสไฟล์มาจากคนละไดรฟ์ ย้ายข้ามไดรฟ์ไม่ได้)
+        """
         saved_bytes = 0
         deleted_count = 0
         for path in file_paths:
             try:
                 if os.path.exists(path):
                     size = os.path.getsize(path)
-                    os.remove(path)
+                    trash_root = base_folder if base_folder else os.path.dirname(path)
+                    self._move_to_trash(path, self._get_trash_folder(trash_root))
                     saved_bytes += size
                     deleted_count += 1
             except Exception as e:
-                self.logger.log_action("ERROR", f"Failed to delete {path}: {e}")
-                
+                self.logger.log_action("ERROR", f"Failed to move {path} to trash: {e}")
+
         saved_mb = saved_bytes / (1024 * 1024)
-        self.logger.log_action("CLEAN_UP", f"Deleted {deleted_count} files, freed {saved_mb:.2f} MB")
+        self.logger.log_action("CLEAN_UP", f"Moved {deleted_count} files to trash, freed {saved_mb:.2f} MB")
         return deleted_count, saved_mb
