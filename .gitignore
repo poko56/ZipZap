@@ -37,3 +37,12 @@ SmartMF_App/
 SmartMF_Test_Environment/
 SmartMF.spec
 api_key.txt
+
+TestFolder/
+action_log.*
+*.spec
+*_backup.py
+dummy.pdf
+invalid.pdf
+test_*.py
+à¸à¸à¸§/

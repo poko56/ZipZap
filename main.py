@@ -163,6 +163,7 @@ class SmartFileManagerApp(ctk.CTk):
         except Exception as e:
             print("Could not load app icon:", e)
             
+        self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
         # --- Sidebar ---
@@ -223,7 +224,6 @@ class SmartFileManagerApp(ctk.CTk):
         # --- Main Content Area ---
         self.main_frame = ctk.CTkFrame(self, fg_color=BG_MAIN, corner_radius=0)
         self.main_frame.grid(row=0, column=1, padx=0, pady=0, sticky="nsew")
-        self.main_frame.pack_propagate(False)
         self.grid_propagate(False)
 
         # Top Bar (Header)
@@ -235,7 +235,6 @@ class SmartFileManagerApp(ctk.CTk):
         # Container for pages
         self.content_container = ctk.CTkFrame(self.main_frame, fg_color="transparent")
         self.content_container.pack(fill="both", expand=True)
-        self.content_container.pack_propagate(False)
 
         self.frames = {}
         self.create_dashboard()
@@ -307,14 +306,14 @@ class SmartFileManagerApp(ctk.CTk):
         
         # Storage Overview Card
         storage_card = ctk.CTkFrame(top_row, fg_color=BG_CARD, corner_radius=15)
-        storage_card.pack(side="left", fill="both", expand=True, padx=(0, 10))
+        storage_card.pack(side="left", fill="x", expand=True, padx=(0, 10), anchor="n")
         ctk.CTkLabel(storage_card, text="Storage Overview", font=ctk.CTkFont(weight="bold", size=16), text_color=TEXT_MAIN).pack(anchor="w", padx=20, pady=(15, 0))
         
         self.lbl_donut = ctk.CTkLabel(storage_card, text="")
         self.lbl_donut.pack(side="left", padx=20, pady=15)
         
         stats_frame = ctk.CTkFrame(storage_card, fg_color="transparent")
-        stats_frame.pack(side="left", padx=20, pady=20, fill="y", expand=True)
+        stats_frame.pack(side="left", padx=20, pady=20, fill="y")
         
         # Legend
         def create_legend(parent, color, text):
@@ -334,7 +333,7 @@ class SmartFileManagerApp(ctk.CTk):
         
         # Target Folder Selection Card
         folder_card = ctk.CTkFrame(top_row, fg_color=BG_CARD, corner_radius=15)
-        folder_card.pack(side="right", fill="both", expand=True, padx=(10, 0))
+        folder_card.pack(side="right", fill="x", expand=True, padx=(10, 0), anchor="n")
         ctk.CTkLabel(folder_card, text="Target Folder", font=ctk.CTkFont(weight="bold", size=16), text_color=TEXT_MAIN).pack(anchor="w", padx=20, pady=(15, 10))
         self.lbl_dash_folder = ctk.CTkLabel(folder_card, text="No folder selected", text_color=TEXT_MUTED, wraplength=300)
         self.lbl_dash_folder.pack(anchor="w", padx=20, pady=5)
@@ -345,7 +344,7 @@ class SmartFileManagerApp(ctk.CTk):
         
         # Middle Row (Quick Actions)
         mid_row = ctk.CTkFrame(frame, fg_color="transparent")
-        mid_row.pack(fill="x", pady=20)
+        mid_row.pack(fill="x", pady=(10, 20))
         ctk.CTkLabel(mid_row, text="Quick Actions", font=ctk.CTkFont(weight="bold", size=16), text_color=TEXT_MAIN).pack(anchor="w", pady=(0, 10))
         
         qa_container = ctk.CTkFrame(mid_row, fg_color="transparent")
@@ -429,16 +428,15 @@ class SmartFileManagerApp(ctk.CTk):
         ctk.CTkLabel(res_header, text="ผลการสแกน", font=ctk.CTkFont(weight="bold", size=16), text_color=TEXT_MAIN).pack(side="left")
         self.lbl_clean_summary = ctk.CTkLabel(res_header, text="พบ 0 ไฟล์ ขนาดรวม 0 MB", text_color=TEXT_MUTED)
         self.lbl_clean_summary.pack(side="right")
-        
-        self.clean_results_frame = ctk.CTkScrollableFrame(res_card, fg_color="transparent")
-        self.clean_results_frame.pack(fill="both", expand=True, padx=10, pady=5)
-        
         bot_f = ctk.CTkFrame(res_card, fg_color="transparent")
-        bot_f.pack(fill="x", padx=20, pady=15)
+        bot_f.pack(side="bottom", fill="x", padx=20, pady=15)
         self.lbl_clean_selected = ctk.CTkLabel(bot_f, text="เลือกแล้ว: 0 ไฟล์ (0 MB)", text_color=TEXT_MAIN, font=ctk.CTkFont(weight="bold"))
         self.lbl_clean_selected.pack(side="left")
         self.btn_cleanup = ctk.CTkButton(bot_f, text="🗑 Clean Up", fg_color="#EF4444", hover_color="#DC2626", command=self.run_cleaner_cleanup, state="disabled")
         self.btn_cleanup.pack(side="right")
+        
+        self.clean_results_frame = ctk.CTkScrollableFrame(res_card, fg_color="transparent")
+        self.clean_results_frame.pack(side="top", fill="both", expand=True, padx=10, pady=5)
 
     def create_converter(self):
         frame = ctk.CTkFrame(self.content_container, fg_color="transparent")
@@ -477,13 +475,13 @@ class SmartFileManagerApp(ctk.CTk):
         
         ctk.CTkButton(dz_content, text="+ Add Files", fg_color="transparent", border_width=1, border_color=TEXT_MUTED, text_color=TEXT_MAIN, hover_color=("#F3F4F6", "#475569"), command=self.add_converter_files).pack()
         
-        # File List Area
-        self.conv_list_frame = ctk.CTkScrollableFrame(card, fg_color="transparent")
-        self.conv_list_frame.pack(fill="both", expand=True, padx=20, pady=5)
-        
-        # Bottom Controls
+        # Start button (packed first to bottom so it's never squashed)
+        self.btn_start_conversion = ctk.CTkButton(card, text="🔄 เริ่มแปลงไฟล์", fg_color=ACCENT_PRIMARY, hover_color=ACCENT_HOVER, height=45, font=ctk.CTkFont(weight="bold", size=14), command=self.run_batch_conversion)
+        self.btn_start_conversion.pack(side="bottom", fill="x", padx=20, pady=(0, 20))
+
+        # Bottom Controls (packed second to bottom)
         bot_controls = ctk.CTkFrame(card, fg_color="transparent")
-        bot_controls.pack(fill="x", padx=20, pady=(10, 20))
+        bot_controls.pack(side="bottom", fill="x", padx=20, pady=(10, 20))
         
         # Format selection
         format_frame = ctk.CTkFrame(bot_controls, fg_color="transparent")
@@ -504,9 +502,9 @@ class SmartFileManagerApp(ctk.CTk):
         self.conv_dir_entry.pack(side="left", fill="x", expand=True, padx=(0, 10))
         ctk.CTkButton(dir_input_frame, text="เลือก", width=60, fg_color="transparent", border_width=1, border_color=TEXT_MUTED, text_color=TEXT_MAIN, hover_color=("#F3F4F6", "#475569"), command=self.select_converter_output_dir).pack(side="right")
         
-        # Start button
-        self.btn_start_conversion = ctk.CTkButton(card, text="🔄 เริ่มแปลงไฟล์", fg_color=ACCENT_PRIMARY, hover_color=ACCENT_HOVER, height=45, font=ctk.CTkFont(weight="bold", size=14), command=self.run_batch_conversion)
-        self.btn_start_conversion.pack(fill="x", padx=20, pady=(0, 20))
+        # File List Area (packed last so it takes the remaining middle space)
+        self.conv_list_frame = ctk.CTkScrollableFrame(card, fg_color="transparent")
+        self.conv_list_frame.pack(side="top", fill="both", expand=True, padx=20, pady=5)
         
         self.refresh_converter_list()
 
@@ -653,13 +651,13 @@ class SmartFileManagerApp(ctk.CTk):
         frame = ctk.CTkFrame(self.content_container, fg_color="transparent")
         self.frames["ai"] = frame
         
-        # Full width scrolling area for chat
-        self.chat_history_frame = ctk.CTkScrollableFrame(frame, fg_color="transparent")
-        self.chat_history_frame.pack(fill="both", expand=True)
-        
-        # Bottom input area (like ChatGPT)
+        # Bottom input area (like ChatGPT) - packed first to bottom
         bottom_area = ctk.CTkFrame(frame, fg_color="transparent")
-        bottom_area.pack(fill="x", side="bottom")
+        bottom_area.pack(side="bottom", fill="x")
+
+        # Full width scrolling area for chat - packed after
+        self.chat_history_frame = ctk.CTkScrollableFrame(frame, fg_color="transparent")
+        self.chat_history_frame.pack(side="top", fill="both", expand=True)
         
         input_container = ctk.CTkFrame(bottom_area, fg_color="transparent")
         input_container.pack(fill="x", padx=40, pady=20)
@@ -729,11 +727,25 @@ class SmartFileManagerApp(ctk.CTk):
                 messagebox.showwarning("แจ้งเตือน", "กรุณาเลือกโฟลเดอร์เป้าหมายก่อนเปิดระบบอัตโนมัติ")
                 self.switch_watch.deselect()
                 return
-            self.watcher_manager.start_watching(self.current_folder)
+            callbacks = {
+                'on_new_file': self.handle_auto_sort,
+                'on_pdf_convert': self.handle_auto_pdf
+            }
+            self.watcher_manager.start_watching(self.current_folder, callbacks)
             self.log_action(f"✅ เริ่มเฝ้าระวังโฟลเดอร์: {self.current_folder}")
         else:
             self.watcher_manager.stop_watching()
             self.log_action("🛑 หยุดเฝ้าระวังโฟลเดอร์")
+
+    def handle_auto_sort(self, file_path):
+        self.organizer.sort_by_extension(self.current_folder)
+        self.log_action(f"⚡ จัดหมวดหมู่อัตโนมัติเนื่องจากพบไฟล์ใหม่: {os.path.basename(file_path)}")
+        self.after(0, self.update_dashboard_stats)
+
+    def handle_auto_pdf(self, file_path):
+        self.converter.convert_docx_to_pdf(file_path, output_dir=os.path.dirname(file_path))
+        self.log_action(f"⚡ แปลง PDF อัตโนมัติ: {os.path.basename(file_path)}")
+        self.after(0, self.update_dashboard_stats)
 
     def update_dashboard_stats(self):
         if not self.current_folder:
@@ -946,12 +958,16 @@ class SmartFileManagerApp(ctk.CTk):
     def log_action(self, msg):
         timestamp = datetime.now().strftime("%H:%M:%S")
         log_msg = f"[{timestamp}] {msg}\n"
-        if hasattr(self, 'dash_log'):
-            self.dash_log.insert("end", log_msg)
-            self.dash_log.see("end")
-        if hasattr(self, 'log_textbox'):
-            self.log_textbox.insert("end", log_msg)
-            self.log_textbox.see("end")
+        
+        def update_gui():
+            if hasattr(self, 'dash_log'):
+                self.dash_log.insert("end", log_msg)
+                self.dash_log.see("end")
+            if hasattr(self, 'log_textbox'):
+                self.log_textbox.insert("end", log_msg)
+                self.log_textbox.see("end")
+                
+        self.after(0, update_gui)
 
     def run_async(self, btn, func, *args):
         if btn:
