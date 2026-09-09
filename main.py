@@ -726,13 +726,34 @@ class SmartFileManagerApp(ctk.CTk):
         self.cleaner.excluded_folders = ex
         self.watcher_manager.excluded_folders = ex
 
+    def _watcher_callbacks(self):
+        """callbacks ที่ SmartFileHandler เรียกเมื่อเจอไฟล์ใหม่
+
+        - on_pdf_convert: ไฟล์ที่หล่นใน <target>/Convert_to_PDF จะถูกแปลงเป็น PDF
+        - on_new_file: ไฟล์ใหม่ที่อื่นจะถูกจัดเข้าโฟลเดอร์ตามประเภท
+        """
+        return {
+            "on_pdf_convert": self.converter.convert_docx_to_pdf,
+            "on_new_file": lambda path: self.organizer.sort_by_extension(self.current_folder),
+        }
+
     def toggle_watch(self):
         if self.switch_watch.get() == 1:
             if not self.current_folder:
                 messagebox.showwarning("แจ้งเตือน", "กรุณาเลือกโฟลเดอร์เป้าหมายก่อนเปิดระบบอัตโนมัติ")
                 self.switch_watch.deselect()
                 return
-            self.watcher_manager.start_watching(self.current_folder)
+            try:
+                ok, msg = self.watcher_manager.start_watching(self.current_folder, self._watcher_callbacks())
+            except Exception as e:
+                ok, msg = False, str(e)
+            if not ok:
+                # ถ้าไม่รายงาน สวิตช์จะค้างสถานะ ON ทั้งที่ไม่มีอะไรถูกเฝ้า และ traceback
+                # จะหายไปเงียบๆ เมื่อรันด้วย pythonw (ไม่มี console)
+                messagebox.showerror("เปิดระบบอัตโนมัติไม่สำเร็จ", msg)
+                self.switch_watch.deselect()
+                self.log_action(f"⚠️ เปิดเฝ้าระวังไม่สำเร็จ: {msg}")
+                return
             self.log_action(f"✅ เริ่มเฝ้าระวังโฟลเดอร์: {self.current_folder}")
         else:
             self.watcher_manager.stop_watching()
