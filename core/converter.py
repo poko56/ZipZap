@@ -60,6 +60,16 @@ class FileConverter:
     def convert_docx_to_pdf(self, input_path, output_dir=None):
         """แปลงไฟล์ Word เป็น PDF"""
         import shutil
+        import sys
+        
+        class DummyStream:
+            def write(self, *args, **kwargs): pass
+            def flush(self, *args, **kwargs): pass
+            def isatty(self): return False
+
+        if sys.stdout is None: sys.stdout = DummyStream()
+        if sys.stderr is None: sys.stderr = DummyStream()
+        
         try:
             if not input_path.lower().endswith(".docx"):
                 return False, "รองรับเฉพาะไฟล์ .docx เท่านั้นในตอนนี้"

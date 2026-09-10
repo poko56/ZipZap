@@ -19,7 +19,7 @@ class StorageCleaner:
         return False
 
     def _get_file_hash(self, filepath):
-        hasher = hashlib.md5()
+        hasher = hashlib.sha256()
         try:
             with open(filepath, 'rb') as f:
                 buf = f.read(65536)

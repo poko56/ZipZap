@@ -1,4 +1,7 @@
 import os
+import sys
+import re
+import subprocess
 import json
 import customtkinter as ctk
 import tkinter as tk
@@ -11,6 +14,18 @@ from PIL import Image, ImageDraw, ImageTk, ImageFont
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+def format_size(size_in_bytes):
+    if size_in_bytes == 0:
+        return "0.0 MB"
+    if size_in_bytes < 1024:
+        return f"{size_in_bytes} B"
+    elif size_in_bytes < 1024 * 1024:
+        return f"{size_in_bytes/1024:.1f} KB"
+    elif size_in_bytes < 1024 * 1024 * 1024:
+        return f"{size_in_bytes/(1024*1024):.1f} MB"
+    else:
+        return f"{size_in_bytes/(1024*1024*1024):.2f} GB"
 
 def create_icon_image(icon_char, color, size=24):
     scale = 3
@@ -643,8 +658,10 @@ class SmartFileManagerApp(ctk.CTk):
             self.log_action(f"🎉 แปลงไฟล์เสร็จสิ้น! ทำสำเร็จ {success_count}/{len(files)} ไฟล์")
             self.after(0, self.converter_files.clear)
             self.after(0, self.refresh_converter_list)
+            self.after(0, lambda: self.btn_start_conversion.configure(state="normal", text="🔄 เริ่มแปลงไฟล์"))
+            self.after(0, lambda: messagebox.showinfo("เสร็จสิ้น", f"แปลงไฟล์เสร็จสิ้น!\nทำสำเร็จ {success_count} จาก {len(files)} ไฟล์"))
             
-        self.btn_start_conversion.configure(state="disabled")
+        self.btn_start_conversion.configure(state="disabled", text="⏳ กำลังแปลงไฟล์...")
         threading.Thread(target=process_conversion, daemon=True).start()
 
     def create_ai_chat(self):
@@ -751,6 +768,8 @@ class SmartFileManagerApp(ctk.CTk):
         if not self.current_folder:
             return
             
+        self.lbl_donut.configure(text="Loading...", image="")
+        
         def count_files():
             try:
                 import shutil
@@ -779,14 +798,13 @@ class SmartFileManagerApp(ctk.CTk):
                 # Get Disk Usage for Free Space
                 try:
                     total, used, free = shutil.disk_usage(self.current_folder)
-                    free_gb = free / (1024**3)
-                    self.after(0, lambda: self.lbl_leg_free.configure(text=f"พื้นที่ว่างดิสก์ ({free_gb:.1f} GB)"))
+                    self.after(0, lambda: self.lbl_leg_free.configure(text=f"พื้นที่ว่างดิสก์ ({format_size(free)})"))
                 except:
                     pass
 
-                self.after(0, lambda: self.lbl_leg_docs.configure(text=f"เอกสาร ({size_docs/(1024*1024):.1f} MB)"))
-                self.after(0, lambda: self.lbl_leg_media.configure(text=f"มัลติมีเดีย ({size_media/(1024*1024):.1f} MB)"))
-                self.after(0, lambda: self.lbl_leg_others.configure(text=f"อื่นๆ ({size_others/(1024*1024):.1f} MB)"))
+                self.after(0, lambda: self.lbl_leg_docs.configure(text=f"เอกสาร ({format_size(size_docs)})"))
+                self.after(0, lambda: self.lbl_leg_media.configure(text=f"มัลติมีเดีย ({format_size(size_media)})"))
+                self.after(0, lambda: self.lbl_leg_others.configure(text=f"อื่นๆ ({format_size(size_others)})"))
                 
                 if total_folder_size > 0:
                     data = [
@@ -797,15 +815,14 @@ class SmartFileManagerApp(ctk.CTk):
                 else:
                     data = None
                     
-                total_mb = total_folder_size / (1024 * 1024)
-                
-                self.after(0, lambda: self.draw_donut(data, total_mb))
+                self.after(0, lambda: self.draw_donut(data, total_folder_size))
             except Exception as e:
                 print("Error calculating stats", e)
+                self.after(0, lambda: self.lbl_donut.configure(text="Error"))
         
         threading.Thread(target=count_files, daemon=True).start()
         
-    def draw_donut(self, data=None, total_mb=0):
+    def draw_donut(self, data=None, total_bytes=0):
         size = 150
         scale = 4
         img_size = size * scale
@@ -838,10 +855,10 @@ class SmartFileManagerApp(ctk.CTk):
         ctk_img = ctk.CTkImage(light_image=img, size=(size, size))
         
         # Format the center text like the mockup
-        if total_mb >= 1024:
-            val_text = f"{total_mb/1024:.1f} GB"
+        if total_bytes > 0:
+            val_text = format_size(total_bytes)
         else:
-            val_text = f"{total_mb:.1f} MB" if total_mb > 0 else "0%"
+            val_text = "0%"
             
         # We can't do two different fonts in one CTkLabel easily, so we'll just put it in two lines
         center_text = f"{val_text}\nUSED"
@@ -894,9 +911,7 @@ class SmartFileManagerApp(ctk.CTk):
     def show_clean_results(self, results):
         self.clean_scan_results = results
         total_size = sum(f["size"] for f in results)
-        mb = total_size / (1024 * 1024)
-        gb = mb / 1024
-        size_str = f"{gb:.2f} GB" if gb >= 1 else f"{mb:.2f} MB"
+        size_str = format_size(total_size)
         self.lbl_clean_summary.configure(text=f"พบ {len(results)} ไฟล์ ขนาดรวม {size_str}")
         self.lbl_clean_selected.configure(text=f"เลือกแล้ว: {len(results)} ไฟล์ ({size_str})")
         
@@ -921,8 +936,8 @@ class SmartFileManagerApp(ctk.CTk):
             ctk.CTkLabel(header, image=img, text="").pack(side="left")
             ctk.CTkLabel(header, text=f" {title} ({len(items)})", font=ctk.CTkFont(weight="bold"), text_color=TEXT_MAIN).pack(side="left")
             
-            group_size = sum(i["size"] for i in items) / (1024*1024)
-            ctk.CTkLabel(header, text=f"{group_size:.1f} MB", font=ctk.CTkFont(weight="bold"), text_color=ACCENT_PRIMARY).pack(side="right")
+            group_size = sum(i["size"] for i in items)
+            ctk.CTkLabel(header, text=f"{format_size(group_size)}", font=ctk.CTkFont(weight="bold"), text_color=ACCENT_PRIMARY).pack(side="right")
             
             for item in items[:30]:  # Limit UI rendering
                 row = ctk.CTkFrame(group_f, fg_color="transparent")
@@ -932,8 +947,8 @@ class SmartFileManagerApp(ctk.CTk):
                 chk.pack(side="left")
                 filename = os.path.basename(item["path"])
                 ctk.CTkLabel(row, text=filename, text_color=TEXT_MAIN).pack(side="left")
-                sz = item["size"] / (1024*1024)
-                ctk.CTkLabel(row, text=f"{sz:.1f} MB", text_color=TEXT_MUTED).pack(side="right")
+                sz = item["size"]
+                ctk.CTkLabel(row, text=f"{format_size(sz)}", text_color=TEXT_MUTED).pack(side="right")
             if len(items) > 30:
                 ctk.CTkLabel(group_f, text=f"... และอีก {len(items)-30} ไฟล์", text_color=TEXT_MUTED).pack(pady=2)
 
@@ -1031,6 +1046,23 @@ class SmartFileManagerApp(ctk.CTk):
 
             threading.Thread(target=batch_rename, daemon=True).start()
 
+    def _bind_mousewheel(self, widget, canvas):
+        def _on_mousewheel(event):
+            if sys.platform == "darwin":
+                canvas.yview_scroll(int(-1 * event.delta), "units")
+            else:
+                canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        def _on_mousewheel_up(event):
+            canvas.yview_scroll(-1, "units")
+        def _on_mousewheel_down(event):
+            canvas.yview_scroll(1, "units")
+
+        widget.bind("<MouseWheel>", _on_mousewheel, add="+")
+        widget.bind("<Button-4>", _on_mousewheel_up, add="+")
+        widget.bind("<Button-5>", _on_mousewheel_down, add="+")
+        for child in widget.winfo_children():
+            self._bind_mousewheel(child, canvas)
+
     def add_chat_bubble(self, text, is_user=False):
         # Use transparent backgrounds for a modern, clean look (like Gemini)
         row = ctk.CTkFrame(self.chat_history_frame, fg_color="transparent")
@@ -1063,10 +1095,57 @@ class SmartFileManagerApp(ctk.CTk):
         name = "คุณ" if is_user else "ZipZap AI"
         ctk.CTkLabel(text_frame, text=name, font=ctk.CTkFont(weight="bold", size=15), text_color=TEXT_MAIN).pack(anchor="w", pady=(0, 5))
         
-        lbl = ctk.CTkLabel(text_frame, text=text, text_color=TEXT_MAIN, font=ctk.CTkFont(size=14), wraplength=700, justify="left")
-        lbl.pack(anchor="w")
+        self._render_message_body(text_frame, text)
+        
+        self._bind_mousewheel(row, self.chat_history_frame._parent_canvas)
         
         self.after(50, lambda: self.chat_history_frame._parent_canvas.yview_moveto(1.0))
+
+    OPEN_MARKER_RE = re.compile(r'(\[OPEN:\s*[^\]]*\])')
+
+    def _render_message_body(self, parent, text):
+        for segment in self.OPEN_MARKER_RE.split(text):
+            if not segment:
+                continue
+
+            if segment.startswith("[OPEN:") and segment.endswith("]"):
+                rel_path = segment[len("[OPEN:"):-1].strip()
+                if not rel_path:
+                    continue
+                full_path = os.path.join(self.current_folder, rel_path) if self.current_folder else rel_path
+                btn = ctk.CTkButton(
+                    parent,
+                    text=f"📂 เปิดไฟล์: {os.path.basename(rel_path)}",
+                    height=30,
+                    corner_radius=8,
+                    fg_color=ACCENT_PRIMARY,
+                    hover_color=ACCENT_HOVER,
+                    font=ctk.CTkFont(size=13, weight="bold"),
+                    command=lambda p=full_path: self.open_file_location(p),
+                )
+                btn.pack(anchor="w", pady=4)
+            else:
+                stripped = segment.strip()
+                if not stripped:
+                    continue
+                ctk.CTkLabel(
+                    parent, text=stripped, text_color=TEXT_MAIN,
+                    font=ctk.CTkFont(size=14), wraplength=700, justify="left",
+                ).pack(anchor="w")
+
+    def open_file_location(self, path):
+        if not os.path.exists(path):
+            messagebox.showerror("ไม่พบไฟล์", f"ไม่พบไฟล์ที่ระบุ:\n{path}")
+            return
+        try:
+            if sys.platform.startswith("win"):
+                subprocess.run(["explorer", "/select,", os.path.normpath(path)])
+            elif sys.platform == "darwin":
+                subprocess.run(["open", "-R", path])
+            else:
+                subprocess.run(["xdg-open", os.path.dirname(path)])
+        except Exception as e:
+            messagebox.showerror("เกิดข้อผิดพลาด", f"ไม่สามารถเปิดไฟล์ได้: {str(e)}")
 
     def clear_chat(self):
         if hasattr(self, 'chat_history_frame'):
@@ -1086,6 +1165,8 @@ class SmartFileManagerApp(ctk.CTk):
             ctk.CTkLabel(banner_frame, text="How can I help you today?", font=ctk.CTkFont(size=28, weight="bold"), text_color=TEXT_MAIN).pack(pady=(10, 5))
             ctk.CTkLabel(banner_frame, text="Ask me to find files, explain documents, or organize your storage.", font=ctk.CTkFont(size=16), text_color=TEXT_MUTED).pack()
 
+            self._bind_mousewheel(banner_frame, self.chat_history_frame._parent_canvas)
+
     def send_message(self):
         user_msg = self.chat_input.get().strip()
         if not user_msg:
@@ -1094,12 +1175,37 @@ class SmartFileManagerApp(ctk.CTk):
         self.add_chat_bubble(user_msg, is_user=True)
         self.chat_input.delete(0, "end")
         
+        # Add loading indicator
+        loading_row = ctk.CTkFrame(self.chat_history_frame, fg_color="transparent")
+        loading_row.pack(fill="x", pady=15)
+        content = ctk.CTkFrame(loading_row, fg_color="transparent")
+        content.pack(fill="x", padx=40)
+        
+        avatar_frame = ctk.CTkFrame(content, width=36, height=36, corner_radius=18, fg_color="#10B981")
+        avatar_frame.pack(side="left", anchor="n", padx=(0, 20))
+        avatar_frame.pack_propagate(False)
+        img = create_icon_image("\ue6dd", "#FFFFFF", size=20)
+        ctk.CTkLabel(avatar_frame, image=img, text="").pack(expand=True)
+        
+        text_frame = ctk.CTkFrame(content, fg_color="transparent")
+        text_frame.pack(side="left", fill="x", expand=True)
+        ctk.CTkLabel(text_frame, text="ZipZap AI", font=ctk.CTkFont(weight="bold", size=15), text_color=TEXT_MAIN).pack(anchor="w", pady=(0, 5))
+        loading_lbl = ctk.CTkLabel(text_frame, text="⏳ กำลังคิด...", text_color=TEXT_MUTED, font=ctk.CTkFont(size=14, slant="italic"))
+        loading_lbl.pack(anchor="w")
+        
+        self.after(50, lambda: self.chat_history_frame._parent_canvas.yview_moveto(1.0))
+        
         def fetch_reply():
             try:
                 reply = self.ai_assistant.ask_ai(self.current_folder, user_msg)
             except Exception as e:
                 reply = f"เกิดข้อผิดพลาด: {e}"
-            self.after(0, lambda: self.add_chat_bubble(reply, is_user=False))
+            
+            def show_reply():
+                loading_row.destroy()
+                self.add_chat_bubble(reply, is_user=False)
+                
+            self.after(0, show_reply)
             
         threading.Thread(target=fetch_reply, daemon=True).start()
 
